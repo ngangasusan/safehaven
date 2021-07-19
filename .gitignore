@@ -1,5 +1,4 @@
 # Build and Release Folders
-node_modules/
 bin-debug/
 bin-release/
 [Oo]bj/
@@ -7,6 +6,8 @@ bin-release/
 
 # Other files and folders
 .settings/
+package-lock.json
+node_modules/
 
 # Executables
 *.swf
