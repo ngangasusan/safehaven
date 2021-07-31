@@ -8,6 +8,10 @@ bin-release/
 .settings/
 package-lock.json
 node_modules/
+composer.json
+composer.lock
+vendor/
+
 
 # Executables
 *.swf

@@ -1,3 +1,6 @@
+<?php
+  session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -87,12 +90,12 @@
 
         <!--Login-->
         <li>
-            <a href="login.html" class="text-gray-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm">Login</a>
+            <a href="login.php" class="text-gray-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm">Login</a>
         </li>
 
         <!--Register-->
         <li>
-            <a href="register.html" class="text-gray-500 px-6 py-3 bg-green-200 rounded-md text-sm">Sign Up</a>
+            <a href="register.php" class="text-gray-500 px-6 py-3 bg-green-200 rounded-md text-sm">Sign Up</a>
         </li>
       </ul>
     </nav>
@@ -113,38 +116,52 @@
                 <span class="text-xs font-bold text-gray-500">Sign Up</span>
             </div>
 
-            <form class="flex justify-around flex-col p-4" id="loginForm" method="POST">
-            
+            <form class="flex justify-around flex-col p-4" action="logic/procedures/process_register.php" id="registerForm" method="POST">
+            <div class="flex">
+            <!--First Name-->
+              <div>
+                <label for="firstname" class="text-gray-500 text-xs font-bold mb-2 ml-2">First Name</label>
+                <input type="text" name="firstname" id="firstname" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="Person" placeholder="Your first name" required>
+                <span id="name-error" class="text-red-500 text-xs ml-2"></span>
+              </div>
+
+              <!--Last Name-->
+              <div>
+                <label for="lastname" class="text-gray-500 text-xs font-bold mb-2 ml-2">Last Name</label>
+                <input type="text" name="lastname" id="lastname" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="One" placeholder="Your first name" required>
+                <span id="name-error" class="text-red-500 text-xs ml-2"></span>
+              </div>
+            </div>
             <!--Email-->
             <div class="flex flex-col mb-6">
                 <label for="email" class="text-gray-500 text-xs font-bold mb-2 ml-2">Email address</label>
-                <input type="email" name="email" id="email" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your email address" required autocomplete="email" >
+                <input type="email" name="email" id="email" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="suengangaw@gmail.com" placeholder="Your email address" required autocomplete="email" required >
                 <span id="email-error" class="text-red-500 text-xs ml-2"></span>
             </div>
 
             <!--Password-->
             <div class="flex flex-col mb-6">
                 <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Password</label>
-                <input type="password" name="password" id="password" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Enter your password" required/>
+                <input type="password" name="password" id="password" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="Password12345" placeholder="Enter your password" required/>
                 <span id="password_error" class="text-red-500 text-xs ml-2"></span>
             </div>
 
             <!-- Confirm Password-->
             <div class="flex flex-col mb-6">
               <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Confirm Password</label>
-              <input type="password" name="password" id="password" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Confirm your password" required/>
+              <input type="password" name="cpassword" id="cpassword" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="Password12345" placeholder="Confirm your password" required/>
               <span id="password_error" class="text-red-500 text-xs ml-2"></span>
           </div>
 
 
             <!--Registration Button-->
             <div class="flex flex-col mb-4">
-                <button class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Sign Up</button>
+                <button id="register" name= "register" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Sign Up</button>
             </div>
 
             <!--Recovery-->
             <div class="flex flex-col items-center text-gray-500 text-sm">
-                <span class="mb-3">Already have an account? <a href="login.html" class="text-blue-500 hover:underline">Login</a></span>
+                <span class="mb-3">Already have an account? <a href="login.php" class="text-blue-500 hover:underline">Login</a></span>
       
             </div>
         </form> 

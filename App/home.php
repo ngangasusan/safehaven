@@ -1,3 +1,23 @@
+<?php
+  session_start();
+  require_once 'logic/procedures/login.procedure.php';
+
+  if(!isset($_SESSION['email']))
+  {
+    header("location: index.php");
+  }
+  $userId = $_SESSION['email'];
+
+  $select_stmt = $db->prepare ("SELECT * FROM user WHERE email=:email");
+  $select_stmt->execute(array("email"=>$email));
+
+  $row = $select_Stmt->fetch(PDO::FETCH_ASSOC);
+
+  if(isset($_SESSION['email'])){
+    ?>Welcome,<?php
+      echo $row['email'];
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,6 +32,7 @@
     <link rel="icon" href="assets/img/logo.png" sizes="48x48" />
   </head>
   <body>
+   <h1>Welcome <?php echo $login_session; ?></h1> 
     <!-- Navbar -->
     <nav
       class="
@@ -95,15 +116,8 @@
           >
         </li>
 
-        <!--Login-->
-        <li>
-            <a href="login.html" class="text-gray-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm">Login</a>
-        </li>
-
-        <!--Register-->
-        <li>
-            <a href="register.html" class="text-gray-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm">Sign Up</a>
-        </li>
+        <!--User In Session-->
+        
       </ul>
     </nav>
 

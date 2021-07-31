@@ -1,3 +1,8 @@
+<?php
+  session_start(); 
+  
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,6 +17,7 @@
     <link rel="icon" href="assets/img/logo.png" sizes="16x16" />
   </head>
   <body>
+    
     <!-- Navbar -->
     <nav class="flex flex-col sm:flex-row sm:justify-between p-2 bg-white shadow-sm border-b items-center">
       <!--Left Side-->
@@ -87,12 +93,12 @@
 
         <!--Login-->
         <li>
-            <a href="login.html" class="text-gray-500 px-6 py-3 bg-green-200 rounded-md text-sm">Login</a>
+            <a href="login.php" class="text-gray-500 px-6 py-3 bg-green-200 rounded-md text-sm">Login</a>
         </li>
 
         <!--Register-->
         <li>
-            <a href="register.html" class="text-gray-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm">Sign Up</a>
+            <a href="register.php" class="text-gray-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm">Sign Up</a>
         </li>
       </ul>
     </nav>
@@ -113,19 +119,24 @@
                 <span class="text-xs font-bold text-gray-500">Login</span>
             </div>
 
-            <form class="flex justify-around flex-col p-4" id="loginForm" method="POST">
+            <form class="flex justify-around flex-col p-4" id="loginForm" action="logic/procedures/login.procedure.php" method="POST">
             
+            <?php 
+              if (isset($_GET['error'])) { ?>
+                <p class="error"><?php echo $_GET['error']; ?></p>
+            <?php } ?>
+           
             <!--Email-->
             <div class="flex flex-col mb-6">
                 <label for="email" class="text-gray-500 text-xs font-bold mb-2 ml-2">Email address</label>
-                <input type="email" name="email" id="email" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your email address" required autocomplete="email" >
+                <input type="email" name="email" id="email" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="suengangaw@gmail.com" placeholder="Your email address" required autocomplete="email" >
                 <span id="email-error" class="text-red-500 text-xs ml-2"></span>
             </div>
 
             <!--Password-->
             <div class="flex flex-col mb-6">
                 <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Password</label>
-                <input type="password" name="password" id="password" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Enter your password" required/>
+                <input type="password" name="password" id="password" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="Password12345" placeholder="Enter your password" required/>
                 <span id="password_error" class="text-red-500 text-xs ml-2"></span>
             </div>
 
@@ -136,7 +147,7 @@
 
             <!--Recovery-->
             <div class="flex flex-col items-center text-gray-500 text-sm">
-                <span class="mb-3">Don't have an account?<a href="register.html" class="text-blue-500 hover:underline">Sign up</a></span>
+                <span class="mb-3">Don't have an account?<a href="register.php" class="text-blue-500 hover:underline">Sign up</a></span>
                     <a href="" class="text-blue-500 hover:underline">Forgot password?</a>
             </div>
         </form> 
