@@ -12,31 +12,9 @@ class DbManager implements DatabaseInterface{
 	private $currentStatement;
 
 	const USER_TABLE = "user",
-	      USER_ID = "`user`.`id`",
+	      USER_ID = "`user`.`userId`";
 
-		  SESSION_TABLE = "session",
-		  SESSION_ID = "`session`.`session_id`",
 
-		  TMP_EMAIL_TABLE = "temporary_email",
-		  TMP_EMAIL_ID = "`temporary_email`.`id`",
-
-		  TMP_PHONE_TABLE = "temporary_phone_number",
-		  TMP_PHONE_ID = "`temporary_phone_number`.`id`",	
-
-		  RESET_PASSWORD_TABLE = "reset_password",
-		  RESET_PASSWORD_ID = "`reset_password`.`id`",
-
-		  DRIVER_INFO_TABLE = "driver_information",
-		  DRIVER_INFO_ID = "`driver_information`.`driverId`",
-
-		  DRIVER_DOC_TABLE = "driver_document",
-		  DRIVER_DOC_ID = "`driver_document`.`driverId`",
-
-		  VEHICLE_TABLE = "vehicle",
-		  VEHICLE_ID = "`vehicle`.`vehicle_id`",
-
-		  VEHICLE_DOC_TABLE = "vehicle_document",
-		  VEHICLE_DOC_ID = "`vehicle_document`.`vehicleId`";
 
     /**
      * @param bool $options - to pass to the PDO connection
@@ -94,13 +72,14 @@ class DbManager implements DatabaseInterface{
 		$this->connect();
 		
 		$sql = "SELECT " . implode (",",$columns) ." from `$table` where $condition_string";
+			//echo $sql;
+			//var_dump($condition_values);
             $stmt = $this->dbConnection->prepare($sql);
+			$return = false;
+
             if($stmt->execute($condition_values)){
                 $result = ($this->fetchAll)? $stmt->fetchAll() : $stmt->fetch();
                 $return = $result;
-            }
-            else{
-                $return = false;
             }
 			return $return;
 	}
@@ -217,6 +196,8 @@ class DbManager implements DatabaseInterface{
 	 * @return bool
 	 */
 	public function delete($table, $condition_string, $condition_values) {
+		$this->connect();
+		
 		$sql = "DELETE from `$table` where $condition_string";
 		$stmt = $this->dbConnection->prepare($sql);
 		$this->currentStatement = $stmt;
@@ -232,6 +213,26 @@ class DbManager implements DatabaseInterface{
 	}
 
 	
+
+    /**
+     * Get the value of dbConnection
+     */ 
+    public function getDbConnection()
+    {
+        return $this->dbConnection;
+    }
+
+    /**
+     * Set the value of dbConnection
+     *
+     * @return  self
+     */ 
+    public function setDbConnection($dbConnection)
+    {
+        $this->dbConnection = $dbConnection;
+
+        return $this;
+    }
 }
 
 ?>

@@ -52,6 +52,18 @@
       <!--Home-->
       <li class="mb-4 sm:mb-0">
         <a href="index.php" class="
+              text-gray-500
+              px-6
+              py-3
+              hover:bg-green-200
+              rounded-md
+              text-sm
+            ">Home</a>
+      </li>
+
+      <!--Therapists-->
+      <li class="mb-4 sm:mb-0">
+        <a href="therapists.php" class="
               text-green-200
               px-6
               py-3
@@ -59,18 +71,6 @@
               rounded-md
               text-sm
               font-bold
-            ">Home</a>
-      </li>
-
-      <!--Therapists-->
-      <li class="mb-4 sm:mb-0">
-        <a href="therapists.php" class="
-              text-gray-500
-              px-6
-              py-3
-              hover:bg-green-200
-              rounded-md
-              text-sm
             ">Therapists</a>
       </li>
 
@@ -131,27 +131,7 @@
       </div>
     </ul>
   </nav>
-
-  <!--Body with image and details-->
-  <!--Error message-->
   
-  <h3 class="text-xl text-center p-6">Welcome <?php echo "$firstname $lastname"; ?></h3>
-  
-
-  <?php if(!isset($_SESSION['verified'])):?>
-  <div class="p-2 m-5 text-center bg-gray-100 rounded-xl">
-    You need to verify your account.
-    Sign in to your email account and click on the verification
-    link we just emailed you at <strong><?php echo "$email"; ?></strong>
-  </div>
-  <?php endif; ?>
-
-  <?php if(isset($_SESSION['verified'])):?>
-  <button class="bg-blue-500 p-6">I am verified</button>
-  <?php endif;?>
-  <!-- <div class="flex flex-col p-6">
-    <img src="assets/img/therapySession.jpg" class=".bg-opacity-100" alt="Therapy Session">
-  </div> -->
 </body>
 <?php
   include "scripts.php";

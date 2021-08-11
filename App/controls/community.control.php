@@ -1,6 +1,13 @@
 <?php
  session_start();
- include "./classloader.inc.php";
+ 
+    require_once "../classloader.inc.php";
+    $dbmanager = New DbManager();
+    include "../delete.php";
+
+    $dbmanager->setFetchAll(true);
+    $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "1 LIMIT 0, 10", []);
+   
 
 ?>
 <!DOCTYPE html>
@@ -13,10 +20,12 @@
   <title>Safe Haven</title>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet"> 
 
 
   <!--Icon-->
-  <link rel="icon" href="assets/img/logo.png" sizes="48x48" />
+  <!--<link rel="icon" href="assets/img/logo.png" sizes="48x48" />-->
+  <link rel="icon" href="../assets/img/logo.png" sizes="48x48" />
 </head>
 
 <body>
@@ -35,7 +44,7 @@
       <!--Logo-->
       <li class="pl-3 pr-6 mb-4 sm:mb-0">
         <a href="index.php" class="flex items-center">
-          <img src="./assets/img/logo.png" alt="logo" class="w-10 sm:w-20 mr-6" />
+          <img src="../assets/img/logo.png" alt="logo" class="w-10 sm:w-20 mr-6" />
           <span class="text-green-400 text-xl">Safe Haven</span>
         </a>
       </li>
@@ -49,22 +58,33 @@
     </ul>
     <!--Right Side-->
     <ul class="flex flex-col sm:flex-row items-center">
-      <!--Home-->
+      <!--Analytics-->
       <li class="mb-4 sm:mb-0">
-        <a href="index.php" class="
-              text-green-200
+        <a href="../admin.php" class="
+              text-gray-500
               px-6
               py-3
               hover:bg-green-200
               rounded-md
               text-sm
-              font-bold
-            ">Home</a>
+            ">Analytics</a>
+      </li>
+
+      <!--Patient-->
+      <li>
+        <a href="./patient.control.php" class="
+              text-gray-500
+              px-6
+              py-3
+              hover:bg-green-200
+              rounded-md
+              text-sm
+            ">Patients</a>
       </li>
 
       <!--Therapists-->
       <li class="mb-4 sm:mb-0">
-        <a href="therapists.php" class="
+        <a href="therapist.control.php" class="
               text-gray-500
               px-6
               py-3
@@ -73,16 +93,16 @@
               text-sm
             ">Therapists</a>
       </li>
-
       <!--Community-->
       <li>
-        <a href="community.php" class="
-              text-gray-500
+        <a href="community.control.php" class="
+              text-green-300
               px-6
               py-3
               hover:bg-green-200
               rounded-md
               text-sm
+              font-bold
             ">Community</a>
       </li>
 
@@ -120,8 +140,6 @@
                     <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
                         <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
                         <a href="editProfile.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
-                        <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="far fa-calendar-check"></i></i> My Appointments</a>
-                        <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-users"></i> Therapists</a>
                         <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
                         <div class="border border-gray-800"></div>
                         <a href="logout.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
@@ -132,29 +150,10 @@
     </ul>
   </nav>
 
-  <!--Body with image and details-->
-  <!--Error message-->
-  
-  <h3 class="text-xl text-center p-6">Welcome <?php echo "$firstname $lastname"; ?></h3>
-  
+  <!--Community Posts View-->
 
-  <?php if(!isset($_SESSION['verified'])):?>
-  <div class="p-2 m-5 text-center bg-gray-100 rounded-xl">
-    You need to verify your account.
-    Sign in to your email account and click on the verification
-    link we just emailed you at <strong><?php echo "$email"; ?></strong>
-  </div>
-  <?php endif; ?>
 
-  <?php if(isset($_SESSION['verified'])):?>
-  <button class="bg-blue-500 p-6">I am verified</button>
-  <?php endif;?>
-  <!-- <div class="flex flex-col p-6">
-    <img src="assets/img/therapySession.jpg" class=".bg-opacity-100" alt="Therapy Session">
-  </div> -->
+ </div>
 </body>
-<?php
-  include "scripts.php";
-  ?>
 
 </html>

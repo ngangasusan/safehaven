@@ -53,7 +53,7 @@
         <!--Home-->
         <li class="mb-4 sm:mb-0">
           <a
-            href="index.php"
+            href="home.php"
             class="
               text-gray-500
               px-6
@@ -112,8 +112,21 @@
     </nav>
 
     <!--Body with image and details-->
-    <div class="flex flex-col p-6">
-        <img src="assets/img/therapySession.jpg" class=".bg-opacity-100" alt="Therapy Session">
+    <!-- <div class="flex flex-col p-6"> -->
+    <div class="flex flex-col p-6 m-5">
+        <div class="flex">
+          <img class="object-contain m-5" src="assets/img/therapySession.jpg" class=".bg-opacity-100" alt="Therapy Session">
+          <h2 class="font-serif	italic p-6 my-1"><strong class="text-3xl">"Growing up, the biggest misconception I had was that </strong> ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"<span><a class="text-blue-400"href="./login.php">Read more</a></span></h2>
+          
+        </div>
+
+        <div class="flex">
+          <h2 class="font-serif	italic p-6 my-1"><strong class="text-3xl">"The community built here is </strong> ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"<span><a class="text-blue-400"href="./login.php">Read more</a></span></h2>
+          <img class="object-contain m-5" src="assets/img/therapySession2.jpeg" class=".bg-opacity-100" alt="Therapy Session">
+          
+        </div>
+        
+        
     </div>
   </body>
 </html>

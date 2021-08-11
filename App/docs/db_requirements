@@ -1,9 +1,17 @@
-Users Table
+user Table
 -> Should contain minute details about a user.
 A user is then given an option to fill in more details about them after registering in order to shorten the process
 
-1. User - CREATE TABLE users ( userId INT (20) UNSIGNED PRIMARY KEY AUTO_INCREMENT, firstname VARCHAR(20), lastname VARCHAR(20), email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL );
-          ALTER TABLE users ADD COLUMN `email_verification_link` VARCHAR(255) AFTER `password`;
-          ALTER TABLE users ADD COLUMN `email_verified_at` VARCHAR(255) AFTER `email_verification_link`;
-          ALTER TABLE users DROP COLUMN email_verified_at
-          ALTER TABLE users ADD COLUMN `email_verified_at` DATETIME DEFAULT CURRENT_TIMESTAMP AFTER `email_verification_link`
+1. User - CREATE TABLE user ( userId INT (20) UNSIGNED PRIMARY KEY AUTO_INCREMENT, firstname VARCHAR(20), lastname VARCHAR(20), email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL );
+          ALTER TABLE user ADD COLUMN `email_verification_link` VARCHAR(255) AFTER `password`;
+          ALTER TABLE user ADD COLUMN `email_verified_at` VARCHAR(255) AFTER `email_verification_link`;
+          ALTER TABLE user DROP COLUMN email_verified_at
+          ALTER TABLE user ADD COLUMN `email_verified_at` DATETIME DEFAULT CURRENT_TIMESTAMP AFTER `email_verification_link`
+
+          ALTER TABLE user ADD COLUMN `profile_picture` VARCHAR(255) AFTER `password`;
+          ALTER TABLE user ADD COLUMN `location` DATETIME DEFAULT CURRENT_TIMESTAMP AFTER `profile_picture`
+          ALTER TABLE user ADD COLUMN `phonenumber` VARCHAR(255) AFTER `email`;
+
+           ALTER TABLE user ADD COLUMN `verified` TINYINT AFTER `profile_picture`;
+           ALTER TABLE user ADD COLUMN `token` VARCHAR(255) AFTER `verified`
+          

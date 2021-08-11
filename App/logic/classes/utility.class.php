@@ -5,6 +5,8 @@
         public static $phoneRegex = "/^\+\d{12}$/"; 
         public static $acceptedImages = ".jpg, .png, .bmp, .gif, .webp";
         const PRIME_NUMBER = 1879;
+        
+        
         /**
          * checks names to ensure that they meet policy
          */
@@ -45,71 +47,86 @@
            */
 
            public static function isPasswordStrong($password){
-            if(strlen($password) >= 9){
-                if(preg_match('@[A-Z]@', $password)){
-                   if(preg_match('@[a-z]@', $password)){
-                      if(preg_match('@[0-9]@', $password)){
-                        return true;
-                      }
-                      else{
-                        echo "Password must have at least one digit";//Password Number Error
-                      }
-                   }else{
-                     echo "Password must have at least one lowercase letter";//Password Lowercase Letter Error
-                   }
-                }
-                else{
-                  echo "Password must have at least one uppercase letter";//Password Uppercase Letter Errors
-                }
+            if(strlen($password) < 9){
+               return Response::make("PLE","Password must be longer than 9 characters");//Password Length Short Error
              }
-             else{
-               echo "Password must be longer than 9 characters";//Password Length Short Error
+             if(!preg_match('@[A-Z]@', $password))
+             {
+                return Response::make("PULE","Password must have at least one uppercase letter");//Password Uppercase Letter Errors   
              }
-           }
-    
-        
-             public static function uploadImage(array $image, $save_name, $in_directory, $update = false, $last_saved_as = ""){
-                $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
-                $ext = strtolower($ext);
-
-                switch (exif_imagetype($image['tmp_name'])) {
-                    case IMAGETYPE_PNG:
-                        $imageTmp=imagecreatefrompng($image['tmp_name']);
-                        break;
-                    case IMAGETYPE_JPEG:
-                        $imageTmp=imagecreatefromjpeg($image['tmp_name']);
-                        break;
-                    case IMAGETYPE_GIF:
-                        $imageTmp=imagecreatefromgif($image['tmp_name']);
-                        break;
-                    case IMAGETYPE_BMP:
-                        $imageTmp=imagecreatefrombmp($image['tmp_name']);
-                        break;
-                    // Defaults to JPG
-                    default:
-                        $imageTmp=imagecreatefromjpeg($image['tmp_name']);
-                        break;
-                }
-            
-                // quality is a value from 0 (worst) to 100 (best)
-                $name = $save_name."-".uniqid().".jpeg";
-                if(imagejpeg($imageTmp, "../storage/$in_directory/$name", 70)){
-                    imagedestroy($imageTmp);
-
-                    if($update && $last_saved_as != ""){
-                        $oldImage = "../storage/$in_directory/$last_saved_as";
-                        if(file_exists($oldImage)){
-                            unlink("$oldImage");
-                        }  
-                    }
-                    
-                    return $name;
-                }
-                else{
-                    imagedestroy($imageTmp);
-                    return false;
-                }
+             if(!preg_match('@[a-z]@', $password))
+             {
+                return Response::make("PLLE","Password must have at least one lowercase letter"); //Password Lowercase Letter Error         
+             }
+             if(!preg_match('@[0-9]@', $password))
+             {
+                return Response::make("PNE", "Password must have at least one digit");//Password Number Error
+             }
+             return true;
             }
+
+
+            /**
+             * This function allows the uploading of images.
+             * It takes the Image Array, the name of the image and the directory to place the image in.
+             * When an image is given a name, the name is appended with a -uniqueId to make the image 
+             * name unique. For example, a name user, after upload will be user-123a3bc4567c2.jpeg. 
+             * All images are saved as a jpeg format. To retrieve an image, please use the returnImgSrc
+             * function to give you the image source. This is because the unique Id after the image has
+             * been uploaded makes it impossible to fetch it directly.
+             * @param array $image - The image array from $_FILES
+             * @param string $save_name - The name to save the image with
+             * @param string $in_directory - The directory in which the image should be saved.
+             * The directory will be autoloaded. So you don't have to worry about the ../. hehe. However
+             * It must be in the storage directory.
+             * @param bool $update = false. If you are updating a currently existing image, then
+             * set this parameter to true. It will allow the method to delete the previously existing 
+             * image and upload the new one.
+             * 
+             * @return bool
+             */
+            public static function uploadImage(array $image, $save_name, $in_directory, $update = false, $last_saved_as = ""){
+            $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
+            $ext = strtolower($ext);
+
+            switch (exif_imagetype($image['tmp_name'])) {
+                case IMAGETYPE_PNG:
+                    $imageTmp=imagecreatefrompng($image['tmp_name']);
+                    break;
+                case IMAGETYPE_JPEG:
+                    $imageTmp=imagecreatefromjpeg($image['tmp_name']);
+                    break;
+                case IMAGETYPE_GIF:
+                    $imageTmp=imagecreatefromgif($image['tmp_name']);
+                    break;
+                case IMAGETYPE_BMP:
+                    $imageTmp=imagecreatefrombmp($image['tmp_name']);
+                    break;
+                // Defaults to JPG
+                default:
+                    $imageTmp=imagecreatefromjpeg($image['tmp_name']);
+                    break;
+            }
+        
+            // quality is a value from 0 (worst) to 100 (best)
+            $name = $save_name."-".uniqid().".jpeg";
+            if(imagejpeg($imageTmp, "../storage/$in_directory/$name", 70)){
+                imagedestroy($imageTmp);
+
+                if($update && $last_saved_as != ""){
+                    $oldImage = "../storage/$in_directory/$last_saved_as";
+                    if(file_exists($oldImage)){
+                        unlink("$oldImage");
+                    }  
+                }
+                
+                return $name;
+            }
+            else{
+                imagedestroy($imageTmp);
+                return false;
+            }
+        }
 
             /**
              * Checks if an image is in an acceptable format.
@@ -124,6 +141,25 @@
                 }
                 return false;
             }
+
+
+            /**
+             * Checks if an email exist already
+            */
+            public static function doesEmailExist($email){
+                $dbmanager = New DbManager();
+                $dbmanager->setFetchAll(true);
+                $emailQuery = $dbmanager->query(DbManager::USER_TABLE, ["email"], "email = ? LIMIT 1", [$email]);
+                
+                if ($emailQuery === false || count($emailQuery) > 0) {
+                    return true;
+                }
+                return false;
+            }
+            
+            //Email Verification
+            
+
 
              /**
               * Numbers formatter. This function formats numbers and return 4000 as 4k

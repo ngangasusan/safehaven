@@ -1,171 +1,138 @@
 <?php
   session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Safe Haven</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safe Haven</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 
 
-    <!--Icon-->
-    <link rel="icon" href="assets/img/logo.png" sizes="16x16" />
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="flex flex-col sm:flex-row sm:justify-between p-2 bg-white shadow-sm border-b items-center">
-      <!--Left Side-->
-      <ul class="flex flex-col sm:flex-row items-center">
-        <!--Logo-->
-        <li class="pl-3 pr-6 mb-4 sm:mb-0">
-          <a href="index.php" class="flex items-center">
-            <img
-              src="./assets/img/logo.png"
-              alt="logo"
-              class="w-10 sm:w-20 mr-6"
-            />
-            <span class="text-green-300 text-xl">Safe Haven</span>
-          </a>
-        </li>
-        <!--Search bar-->
-        <li class="pl-3 pr-6 mb-4 sm:mb-0">
-          <div>
-            <input type="text" class="bg-gray-100 mx-6 outline-none p-3 rounded-2xl" placeholder="Search therapist" />
-            <i class="fas fa-search"></i>
-          </div>
-        </li>
-      </ul>
-      <!--Right Side-->
-      <ul class="flex flex-col sm:flex-row items-center">
-        <!--Home-->
-        <li class="mb-4 sm:mb-0">
-          <a
-            href="index.php"
-            class="
-              text-gray-500
-              px-6
-              py-3
-              hover:bg-green-200
-              rounded-md
-              text-sm
-            "
-            >Home</a
-          >
-        </li>
+  <!--Icon-->
+  <link rel="icon" href="assets/img/logo.png" sizes="16x16" />
+</head>
 
-        <!--Therapists-->
-        <li class="mb-4 sm:mb-0">
-          <a
-            href="therapists.php"
-            class="
-              text-gray-500
-              px-6
-              py-3
-              hover:bg-green-200
-              rounded-md
-              text-sm
-            "
-            >Therapists</a
-          >
-        </li>
+<body>
+  <!--Navbar-->
+  <?php
+  include "./classloader.inc.php";
+  include "./components/header.cmp.php";
+  $firstname = "";
+  $lastname = "";
+  $email = "";
+  $buttonText = "Sign Up";
+  $action = "r";
+  $id = 0;
 
-        <!--Community-->
-        <li>
-          <a
-            href="community.php"
-            class="
-              text-gray-500
-              px-6
-              py-3
-              hover:bg-green-200
-              rounded-md
-              text-sm
-            "
-            >Community</a
-          >
-        </li>
+  if (isset($_GET['edit']) && (int)$_GET['edit']>1) {
+    $id = (int)$_GET['edit'];
 
-        <!--Login-->
-        <li>
-            <a href="login.php" class="text-gray-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm">Login</a>
-        </li>
+    $dbmanager = new DbManager();
+    $userinfo = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userId = ?", [$id]);
 
-        <!--Register-->
-        <li>
-            <a href="register.php" class="text-gray-500 px-6 py-3 bg-green-200 rounded-md text-sm">Sign Up</a>
-        </li>
-      </ul>
-    </nav>
+    if ($userinfo !== false) {
+      $firstname = $userinfo['firstname'];
+      $lastname = $userinfo['lastname'];
+      $email = $userinfo['email'];
+      $buttonText = "Update";
+      $action = "u";
+    }
 
-    <!--Registration Box-->
-    <div class="flex flex-col sm:flex sm:flex-row-reverse bg-gray-50 rounded-md w-full sm:w-8/12 sm:mx-auto sm:mt-20 shadow overflow-hidden mb-10">
-        <!--Left with logo-->
-        <div class="flex flex-col justify-center items-center bg-white p-6 m-0 sm:w-6/12 w-full">
-            <img src="assets/img/logo.png" alt="logo" class="w-32 sm:w-64">
-            <span class="text-green-300 text-3xl">Safe Haven</span>
-            <p class="my-4 text-gray-500">A step away from clarity</p>
-        </div>
+  }
+  
 
-        <!--Right with dets-->
-        <div class="flex flex-col flex-grow items-center p-6">
-            <div class="w-full p-4 flex flex-row justify-start items-center mb-6">
-                <img src="assets/img/logo.png" alt="logo" class="w-12">
-                <span class="text-xs font-bold text-gray-500">Sign Up</span>
-            </div>
+  ?>
 
-            <form class="flex justify-around flex-col p-4" action="logic/procedures/process_register.php" id="registerForm" method="POST">
-            <div class="flex">
-            <!--First Name-->
-              <div>
-                <label for="firstname" class="text-gray-500 text-xs font-bold mb-2 ml-2">First Name</label>
-                <input type="text" name="firstname" id="firstname" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="Person" placeholder="Your first name" required>
-                <span id="name-error" class="text-red-500 text-xs ml-2"></span>
-              </div>
-
-              <!--Last Name-->
-              <div>
-                <label for="lastname" class="text-gray-500 text-xs font-bold mb-2 ml-2">Last Name</label>
-                <input type="text" name="lastname" id="lastname" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="One" placeholder="Your first name" required>
-                <span id="name-error" class="text-red-500 text-xs ml-2"></span>
-              </div>
-            </div>
-            <!--Email-->
-            <div class="flex flex-col mb-6">
-                <label for="email" class="text-gray-500 text-xs font-bold mb-2 ml-2">Email address</label>
-                <input type="email" name="email" id="email" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="suengangaw@gmail.com" placeholder="Your email address" required autocomplete="email" required >
-                <span id="email-error" class="text-red-500 text-xs ml-2"></span>
-            </div>
-
-            <!--Password-->
-            <div class="flex flex-col mb-6">
-                <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Password</label>
-                <input type="password" name="password" id="password" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="Password12345" placeholder="Enter your password" required/>
-                <span id="password_error" class="text-red-500 text-xs ml-2"></span>
-            </div>
-
-            <!-- Confirm Password-->
-            <div class="flex flex-col mb-6">
-              <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Confirm Password</label>
-              <input type="password" name="cpassword" id="cpassword" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="Password12345" placeholder="Confirm your password" required/>
-              <span id="password_error" class="text-red-500 text-xs ml-2"></span>
-          </div>
-
-
-            <!--Registration Button-->
-            <div class="flex flex-col mb-4">
-                <button id="register" name= "register" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Sign Up</button>
-            </div>
-
-            <!--Recovery-->
-            <div class="flex flex-col items-center text-gray-500 text-sm">
-                <span class="mb-3">Already have an account? <a href="login.php" class="text-blue-500 hover:underline">Login</a></span>
-      
-            </div>
-        </form> 
-        </div>
+  <!--Registration Box-->
+  <div class="flex flex-col sm:flex sm:flex-row-reverse bg-gray-50 rounded-md w-full sm:w-8/12 sm:mx-auto sm:mt-20 shadow overflow-hidden mb-10">
+    <!--Left with logo-->
+    <div class="flex flex-col justify-center items-center bg-white p-6 m-0 sm:w-6/12 w-full">
+      <img src="assets/img/logo.png" alt="logo" class="w-32 sm:w-64">
+      <span class="text-green-300 text-3xl">Safe Haven</span>
+      <p class="my-4 text-gray-500">A step away from clarity</p>
     </div>
-  </body>
+
+    <!--Right with dets-->
+    <div class="flex flex-col flex-grow items-center p-6">
+      <!--Displaying errors-->
+      <div id="error" class="opacity-100 transition-all text-red-600 py-2 px-4 rounded-3xl"></div>
+      <div id="success-display" class="opacity-100 transition-all text-green-500 py-2 px-4 rounded-3xl"></div>
+
+      <div class="w-full p-4 flex flex-row justify-start items-center mb-6">
+        <img src="assets/img/logo.png" alt="logo" class="w-12">
+        <span class="text-xs font-bold text-gray-500">Sign Up</span>
+      </div>
+
+      <form class="flex justify-around flex-col p-4" id="registerForm" method="GET">
+        <div class="flex">
+          <!--First Name-->
+          <div>
+            <label for="firstname" class="text-gray-500 text-xs font-bold mb-2 ml-2">First Name</label>
+            <input type="text" name="firstname" id="firstname" onkeyup="nameInputVerify(this)" value="<?php echo $firstname?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your first name">
+          </div>
+
+          <!--Last Name-->
+          <div>
+            <label for="lastname" class="text-gray-500 text-xs font-bold mb-2 ml-2">Last Name</label>
+            <input type="text" name="lastname" id="lastname" onkeyup="nameInputVerify(this)" value="<?php echo $lastname?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your first name">
+          </div>
+        </div>
+        <!--Email-->
+        <div class="flex flex-col mb-6">
+          <label for="email" class="text-gray-500 text-xs font-bold mb-2 ml-2">Email address</label>
+          <input type="email" name="email" id="email" onkeyup="emailInputVerify(this)" value="<?php echo $email?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your email address">
+        </div>
+
+        
+        <?php if (isset($_SESSION['userType']) !== "admin" && $id!=0) {?>
+          <!-- Old Password-->
+          <div class="flex flex-col mb-6">
+            <label for="opassword" class="text-gray-500 text-xs font-bold mb-2 ml-2">Current Password</label>
+            <input type="password" name="opassword" id="opassword" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Enter your current password" />
+          </div>
+        <?php } ?>
+        
+
+        <!--Hidden input field-->
+        <input type="hidden" id ="action" name="action" value="<?php echo $action?>">
+        <input type="hidden" id = "id" name="id" value = "<?php echo $id ?>">
+
+        <!--Password-->
+        <div class="flex flex-col mb-6">
+          <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Password</label>
+          <input type="password" name="password" id="password" onkeyup="checkPassword(this)" value="Susan123456" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Enter your password" />
+        </div>
+
+        <!-- Confirm Password-->
+        <div class="flex flex-col mb-6">
+          <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Confirm Password</label>
+          <input type="password" name="cpassword" id="cpassword" value="Susan123456" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Confirm your password" />
+        </div>
+
+
+        <!--Registration Button-->
+        <div class="flex flex-col mb-4">
+          <button type="button" id="register-btn" name="register-btn" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold"><?php echo $buttonText?></button>
+        </div>
+
+        <!--Recovery-->
+        <div class="flex flex-col items-center text-gray-500 text-sm">
+          <span class="mb-3">Already have an account? <a href="login.php" class="text-blue-500 hover:underline">Login</a></span>
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <?php
+  include "scripts.php";
+  ?>
+  <script src="./js/register.js"></script>
+</body>
+
 </html>
