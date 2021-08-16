@@ -71,6 +71,7 @@
           >
         </li>
 
+         <?php if (!isset($_SESSION['userId'])) {?>
         <!--Login-->
         <li>
             <a href="login.php" class="text-gray-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm">Login</a>
@@ -80,5 +81,7 @@
         <li>
             <a href="register.php" class="text-gray-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm">Sign Up</a>
         </li>
+        <?php }?>
+
       </ul>
     </nav>

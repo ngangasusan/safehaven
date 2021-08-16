@@ -131,7 +131,10 @@ function main_ajax_with_element(element_to_change, url, data, send_format, appen
  */
 function main_ajax_with_call_back(call_back, url, data, send_format, set_header = true){
     send_format = send_format.toLowerCase();
+    if (set_header) {
+        console.log("serializing data");
     data = serialize(data);
+    }
     var xhttp;
     if(window.XMLHttpRequest){
         xhttp = new XMLHttpRequest();

@@ -2,9 +2,10 @@
 
     class Utility {
         public static $nameRegex = "/^[\w]+(\s?[\w\-_\'\.]+?\s*?)+?$/";
-        public static $phoneRegex = "/^\+\d{12}$/"; 
+        public static $phoneRegex = "/^\+?\d{12}$/"; 
         public static $acceptedImages = ".jpg, .png, .bmp, .gif, .webp";
         const PRIME_NUMBER = 1879;
+        public static $storagePath = "../../storage";
         
         
         /**
@@ -83,6 +84,8 @@
              * set this parameter to true. It will allow the method to delete the previously existing 
              * image and upload the new one.
              * 
+             * Always change Utility::storagePath when you are not accessing the uploadImage from the procedures or classes 
+             * folder.
              * @return bool
              */
             public static function uploadImage(array $image, $save_name, $in_directory, $update = false, $last_saved_as = ""){
@@ -110,11 +113,11 @@
         
             // quality is a value from 0 (worst) to 100 (best)
             $name = $save_name."-".uniqid().".jpeg";
-            if(imagejpeg($imageTmp, "../storage/$in_directory/$name", 70)){
+            if(imagejpeg($imageTmp, Utility::$storagePath."/$in_directory/$name", 70)){
                 imagedestroy($imageTmp);
 
                 if($update && $last_saved_as != ""){
-                    $oldImage = "../storage/$in_directory/$last_saved_as";
+                    $oldImage = Utility::$storagePath ."/$in_directory/$last_saved_as";
                     if(file_exists($oldImage)){
                         unlink("$oldImage");
                     }  

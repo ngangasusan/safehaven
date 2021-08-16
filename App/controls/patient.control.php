@@ -1,13 +1,14 @@
 <?php
- session_start();
- 
-    require_once "../classloader.inc.php";
-    $dbmanager = New DbManager();
-    include "../delete.php";
+session_start();
 
-    $dbmanager->setFetchAll(true);
-    $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "1 LIMIT 0, 10", []);
-   
+require_once "../classloader.inc.php";
+$dbmanager = new DbManager();
+include "../delete.php";
+
+$dbmanager->setFetchAll(true);
+//$tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "1 LIMIT 0, 100", []);
+$tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["patient"]);
+
 
 ?>
 <!DOCTYPE html>
@@ -20,7 +21,7 @@
   <title>Safe Haven</title>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-  <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet"> 
+  <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
 
 
   <!--Icon-->
@@ -107,18 +108,17 @@
       </li>
 
       <?php
-      $dbmanager = New DbManager();
+      $dbmanager = new DbManager();
       $userInfo = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userId = ?", [$_SESSION['userId']]);
       $firstname = $lastname = $email = "";
-      if ($userInfo!==false) {
+      if ($userInfo !== false) {
         $firstname = $userInfo['firstname'];
         $lastname = $userInfo['lastname'];
         $email = $userInfo['email'];
-       // $verified = $userInfo['verified'];
-      }
-      else{
+        // $verified = $userInfo['verified'];
+      } else {
         //echo "User info is false";
-        echo "User id is ".$_SESSION['userId'];
+        echo "User id is " . $_SESSION['userId'];
       }
       ?>
 
@@ -126,103 +126,128 @@
         <!--Username-->
         <li class="px-2">
 
-          <!-- <p class="font-bold"><?php echo "$firstname $lastname"?> -->
-          <?php $username = "$firstname $lastname"?>
+          <!-- <p class="font-bold"><?php echo "$firstname $lastname" ?> -->
+          <?php $username = "$firstname $lastname" ?>
         </li>
         <li>
-        <!-- <i class="far fa-user"></i> -->
-        <!-- <i class="fas fa-caret-down dropdown-menu"></i> -->
+          <!-- <i class="far fa-user"></i> -->
+          <!-- <i class="fas fa-caret-down dropdown-menu"></i> -->
         </li>
         <li class="flex-1 md:flex-none md:mr-3">
-                <div class="relative inline-block">
-                    <button onclick="toggleDD('myDropdown')" class="drop-button text-white focus:outline-none"> <span class="pr-2"><i class="far fa-user"></i></span> <?php echo $username?> <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg></button>
-                    <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
-                        <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
-                        <a href="editProfile.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
-                        <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
-                        <div class="border border-gray-800"></div>
-                        <a href="logout.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
-                    </div>
-                </div>
-            </li>
+          <div class="relative inline-block">
+            <button onclick="toggleDD('myDropdown')" class="drop-button text-white focus:outline-none"> <span class="pr-2"><i class="far fa-user"></i></span> <?php echo $username ?> <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg></button>
+            <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
+              <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
+              <a href="editProfile.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
+              <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
+              <div class="border border-gray-800"></div>
+              <a href="logout.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
+            </div>
+          </div>
+        </li>
       </div>
     </ul>
   </nav>
 
   <!--Button for adding users-->
   <div>
-        <i class="fas fa-user-plus"></i>
-      <button>Add User</button>
+    <i class="fas fa-user-plus"><span><a href="addPatient.php">Add Patient</a></span></i>
+   
   </div>
-  
+
   <!--Table with user details-->
   <div class="container flex justify-center mx-auto">
     <div class="flex flex-col">
-        <div class="w-full">
-            <div class="border-b border-gray-200 shadow p-6">
-                <table>
-                <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    User ID
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    First Name
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Last Name
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Email Address
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Edit
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Delete
-                                </th>
-                            </tr>
-                    <tbody class="bg-white">
-                        <?php
-                        foreach($tabledata as $row){?>
-                        <tr class="whitespace-nowrap">
-                            <td class="px-6 py-4 text-sm text-gray-500">
-                                <?php echo $row['userId']?>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
-                                <?php echo $row['firstname']?>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
-                                <?php echo $row['lastname']?>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                            <?php echo $row['email']?>
-                            </td>
-                            <td class="px-6 py-4">
-                                <a class="px-4 py-1 text-sm text-white bg-blue-400 rounded" href='<?PHP echo "../register.php?edit=". $row['userId'];?>' >Edit</a>
-                            </td>
-                            <td class="px-6 py-4">
-                                <a class="px-4 py-1 text-sm text-white bg-red-400 rounded" href='<?PHP echo $_SERVER['PHP_SELF']."?delete=". $row['userId'];?>' >Delete</a>
-                                
-                            </td>
-                        </tr>
-                        
-                        <?php }?>
+      <div class="w-full">
+        <div class="border-b border-gray-200 shadow p-6">
+          <table>
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-2 text-xs text-gray-500">
+                  User ID
+                </th>
+                <th class="px-6 py-2 text-xs text-gray-500">
+                  First Name
+                </th>
+                <th class="px-6 py-2 text-xs text-gray-500">
+                  Last Name
+                </th>
+                <th class="px-6 py-2 text-xs text-gray-500">
+                  Email Address
+                </th>
+                <th class="px-6 py-2 text-xs text-gray-500">
+                  Phone Number
+                </th>
+                <th class="px-6 py-2 text-xs text-gray-500">
+                  Type
+                </th>
+                <th class="px-6 py-2 text-xs text-gray-500">
+                  Edit
+                </th>
+                <th class="px-6 py-2 text-xs text-gray-500">
+                  Delete
+                </th>
+                <th class="px-6 py-2 text-xs text-gray-500">
+                  Disable
+                </th>
+              </tr>
+            <tbody class="bg-white">
+              <?php
+              foreach ($tabledata as $row) { ?>
+                <tr class="whitespace-nowrap">
+                  <td class="px-6 py-4 text-sm text-gray-500">.
+                    <?php echo $row['userId'] ?>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="text-sm text-gray-900">
+                      <?php echo $row['firstname'] ?>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="text-sm text-gray-900">
+                      <?php echo $row['lastname'] ?>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <?php echo $row['email'] ?>
+                  </td>
 
-                        
+                  <td class="px-6 py-4">
+                    <?php echo $row['phonenumber'] ?>
+                  </td>
+                  <td class="px-6 py-4">
+                    <?php echo $row['userType'] ?>
+                  </td>
+                  <td class="px-6 py-4">
+                    <!--<a class="px-4 py-1 text-sm text-white bg-blue-400 rounded" href='<?PHP echo "../register.php?edit=" . $row['userId']; ?>'>Edit</a>-->
+                    <a href='<?PHP echo "../register.php?edit=" . $row['userId']; ?>'><i class="fas fa-edit"></i></a>
+                  </td>
+                  <td class="px-6 py-4">
+                    <!--<a 
+                      class="px-4 py-1 text-sm text-white bg-red-400 rounded" 
+                      onclick="return check();"
+                      href='<?PHP echo $_SERVER['PHP_SELF'] . "?delete=" . $row['userId']; ?>'>Delete</a>-->
+                      <a href='<?PHP echo $_SERVER['PHP_SELF'] . "?delete=" . $row['userId']; ?>'><i class="fas fa-trash-alt"></i></a>
+                  </td>
+                  <!--Disable user-->
+                  <td>
+                    <a href=""><i class="fas fa-user-slash"></i></a>
+                  </td>
+                </tr>
 
-                    </tbody>
-                </table>
+              <?php } ?>
 
-            </div>
+
+
+            </tbody>
+          </table>
+
         </div>
+      </div>
     </div>
-    </div>
+  </div>
 </body>
 
 </html>

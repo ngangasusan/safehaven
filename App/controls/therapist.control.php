@@ -182,12 +182,20 @@
                                 <th class="px-6 py-2 text-xs text-gray-500">
                                     Hospital
                                 </th>
-                                
                                 <th class="px-6 py-2 text-xs text-gray-500">
-                                    Edit
+                                  Phone Number
                                 </th>
                                 <th class="px-6 py-2 text-xs text-gray-500">
-                                    Delete
+                                  Type
+                                </th>
+                                <th class="px-6 py-2 text-xs text-gray-500">
+                                  Edit
+                                </th>
+                                <th class="px-6 py-2 text-xs text-gray-500">
+                                  Delete
+                                </th>
+                                <th class="px-6 py-2 text-xs text-gray-500">
+                                  Disable
                                 </th>
                             </tr>
                     <tbody class="bg-white">
@@ -198,31 +206,43 @@
                                 <?php echo $row['userId']?>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
+                              <div class="text-sm text-gray-900">
                                 <?php echo $row['firstname']?>
-                                </div>
+                              </div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
+                              <div class="text-sm text-gray-900">
                                 <?php echo $row['lastname']?>
-                                </div>
+                              </div>
                             </td>
                             <td class="px-6 py-4">
-                            <?php echo $row['email']?>
+                              <?php echo $row['email']?>
                             </td>
-                            <td class="px-6 py-4">
-                             <?php echo $row['email']?>
+                            <!--Field-->
+                            <td class="px-6 py-4">                       
                             </td>
+                            <!--Hospital-->
                             <td class="px-6 py-4">
-                            <?php echo $row['email']?>
+                            </td>
+                            <!--phone number-->
+                            <td class="px-6 py-4">
+                              <?php echo $row['phonenumber']?>
+                            </td>
+                            <!--UserType-->
+                            <td class="px-6 py-4">
+                              <?php echo $row['userType']?>
                             </td>
                             
+                            
                             <td class="px-6 py-4">
-                                <a class="px-4 py-1 text-sm text-white bg-blue-400 rounded" href='<?PHP echo "../register.php?edit=". $row['userId'];?>' >Edit</a>
+                              <a href='<?PHP echo "../register.php?edit=" . $row['userId']; ?>'><i class="fas fa-edit"></i></a>
                             </td>
                             <td class="px-6 py-4">
-                                <a class="px-4 py-1 text-sm text-white bg-red-400 rounded" href='<?PHP echo $_SERVER['PHP_SELF']."?delete=". $row['userId'];?>' >Delete</a>
-                                
+                              <a href='<?PHP echo $_SERVER['PHP_SELF'] . "?delete=" . $row['userId']; ?>'><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                            <!--Disable user-->
+                            <td>
+                              <a href=""><i class="fas fa-user-slash"></i></a>
                             </td>
                         </tr>
                         

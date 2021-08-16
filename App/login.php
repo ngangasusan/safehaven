@@ -18,8 +18,10 @@
   <body>
     <!--Navbar-->
     <?php
-    include "./components/header.cmp.php";
-    ?>
+  include "./classloader.inc.php";
+  include "./components/header.cmp.php";
+ 
+  ?>
     <!--Login Box-->
     <div class="flex flex-col sm:flex sm:flex-row-reverse bg-gray-50 rounded-md w-full sm:w-8/12 sm:mx-auto sm:mt-20 shadow overflow-hidden mb-10">
         <!--Left with Dets-->
@@ -45,13 +47,13 @@
             <!--Email-->
             <div class="flex flex-col mb-6">
                 <label for="email" class="text-gray-500 text-xs font-bold mb-2 ml-2">Email address</label>
-                <input type="email" name="email" id="email" onkeyup="nameInputVerify(this)" value="susan@gmail.com" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="ale@gmail.com" placeholder="Your email address" required autocomplete="email" >
+                <input type="email" name="email" id="email" onkeyup="nameInputVerify(this)" value="susan@gmail.com" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your email address" required autocomplete="email" >
             </div>
 
             <!--Password-->
             <div class="flex flex-col mb-6">
                 <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Password</label>
-                <input type="password" name="password" id="password" onkeyup="checkPassword(this)" value="Susan123456" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="ale" placeholder="Enter your password" required/>
+                <input type="password" name="password" id="password" onkeyup="checkPassword(this)" value="Susan123456" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Enter your password" required/>
             </div>
 
             <!--Login Button-->

@@ -27,8 +27,6 @@ session_start();
   $lastname = "";
   $email = "";
 
-  $buttonText = "Sign Up";
-  $labelText = "Sign Up";
   $action = "r";
   $id = 0;
 
@@ -69,7 +67,7 @@ session_start();
 
       <div class="w-full p-4 flex flex-row justify-start items-center mb-6">
         <img src="assets/img/logo.png" alt="logo" class="w-12">
-        <span class="text-xs font-bold text-gray-500"><?php echo $labelText ?></span>
+        <span class="text-xs font-bold text-gray-500">Add User</span>
       </div>
 
       <form class="flex justify-around flex-col p-4" id="registerForm" method="GET" enctype="multipart/form-data">
@@ -77,51 +75,35 @@ session_start();
           <!--First Name-->
           <div>
             <label for="firstname" class="text-gray-500 text-xs font-bold mb-2 ml-2">First Name</label>
-            <input type="text" name="firstname" id="firstname" onkeyup="nameInputVerify(this)" value="<?php echo $firstname ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your first name">
+            <input type="text" name="firstname" id="firstname" onkeyup="nameInputVerify(this)" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Patient first name">
           </div>
 
           <!--Last Name-->
           <div>
             <label for="lastname" class="text-gray-500 text-xs font-bold mb-2 ml-2">Last Name</label>
-            <input type="text" name="lastname" id="lastname" onkeyup="nameInputVerify(this)" value="<?php echo $lastname ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your first name">
+            <input type="text" name="lastname" id="lastname" onkeyup="nameInputVerify(this)" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Patient last name">
           </div>
         </div>
         <!--Email-->
         <div class="flex flex-col mb-6">
           <label for="email" class="text-gray-500 text-xs font-bold mb-2 ml-2">Email address</label>
-          <input type="email" name="email" id="email" onkeyup="emailInputVerify(this)" value="<?php echo $email ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your email address">
+          <input type="email" name="email" id="email" onkeyup="emailInputVerify(this)" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Patient email address">
         </div>
 
-        <?php if (isset($_SESSION['userId'])) { ?>
-          <!--Phone number-->
-          <div class="flex flex-col mb-6">
-            <label for="phone" class="text-gray-500 text-xs font-bold mb-2 ml-2">Mobile Number</label>
-            <input type="tel" name="phone" id="phone" onkeyup="phoneInputVerify(this)" value="<?php echo $phonenumber ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your mobile number">
-          </div>
+        
+        <!--Phone number-->
+        <!-- <div class="flex flex-col mb-6">
+        <label for="phone" class="text-gray-500 text-xs font-bold mb-2 ml-2">Mobile Number</label>
+        <input type="tel" name="phone" id="phone" onkeyup="phoneInputVerify(this)" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Patient mobile number">
+        </div> -->
 
-          <!--Adding profile picture-->
-          <div class="flex flex-col mb-6">
-            <label for="profile_picture" class="text-gray-500 text-xs font-bold mb-2 ml-2">Profile Picture</label>
-            <input type="file" name="profile_picture" id="profile_picture" class="text-gray-500 text-xs font-bold mb-2 ml-2">
-          </div>
+        <!--Adding profile picture-->
+        <!-- <div class="flex flex-col mb-6">
+        <label for="profile_picture" class="text-gray-500 text-xs font-bold mb-2 ml-2">Profile Picture</label>
+        <input type="file" name="profile_picture" id="profile_picture" class="text-gray-500 text-xs font-bold mb-2 ml-2">
+        </div> -->
 
-        <?php } ?>
-
-         <!--Password Reset Part-->
-         <?php if (isset($_SESSION['userId'])) { ?>
-          <div>
-            <p class="bg-green-200 rounded-md text-sm text-gray-500 py-2 px-4 italic">Only fill in you password if you want to reset it</p>
-          </div>
-        <?php } ?>
-
-        <?php if (isset($_SESSION['userType']) !== "admin" && $id != 0) { ?>
-          <!-- Old Password-->
-          <div class="flex flex-col mb-6">
-            <label for="opassword" class="text-gray-500 text-xs font-bold mb-2 ml-2">Current Password</label>
-            <input type="password" name="opassword" id="opassword" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Enter your current password" />
-          </div>
-        <?php } ?>
-
+        
 
         <!--Hidden input field-->
         <input type="hidden" id="action" name="action" value="<?php echo $action ?>">
@@ -142,7 +124,7 @@ session_start();
 
         <!--Registration Button-->
         <div class="flex flex-col mb-4">
-          <button type="button" id="register-btn" name="register-btn" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold"><?php echo $buttonText ?></button>
+          <button type="button" id="register-btn" name="register-btn" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Register</button>
         </div>
 
         <?php if (!isset($_SESSION['userId'])) { ?>
@@ -157,7 +139,7 @@ session_start();
   <?php
   include "scripts.php";
   ?>
-  <script src="./js/register.js"></script>
+ 
 </body>
 
 </html>

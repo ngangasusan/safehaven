@@ -2,6 +2,11 @@
  session_start();
  include "./classloader.inc.php";
 
+ $dbmanager =  New DbManager();
+ $dbmanager->setFetchAll(true);
+ $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["therapist"]);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,7 +124,7 @@
                             <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg></button>
                     <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
                         <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
-                        <a href="editProfile.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
+                        <a href="profile.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
                         <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="far fa-calendar-check"></i></i> My Appointments</a>
                         <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-users"></i> Therapists</a>
                         <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
@@ -133,6 +138,66 @@
   </nav>
   
 </body>
+<!--Display registered therapists-->
+<div>
+  <!--Therapists Picture
+  <div></div>
+  Therapists name-->
+  <div class="tbg mx-auto my-0 mt-3 bg-white">
+    <!--Settings-->
+  <div class="theader flex justify-between">
+    <div class="flex items-center text-gray-500 text-center px-5">
+      <i class="fa fa-cog" aria-hidden="true"></i>
+    </div>
+    <!--Comments icon-->
+    <div class="flex items-center text-gray-500 text-center px-5">
+      <i class="fa fa-comments" aria-hidden="true"></i>
+    </div>
+  </div>
+  
+  <!--Therapists Details-->
+  <div class="px-10 flex flex-row items-center sm:justify-between">
+    <!--Previous Arrow-->
+    <div>
+      <i class="fas fa-arrow-left fa-6x text-green-300"></i>
+    </div>
+    <!--Therapist Card-->
+    <div class="tphoto rounded-lg border border-gray-400 shadow-lg items-center">
+      
+      <img src="./assets/img/tempusers/therapist1.jpg" 
+           class="w-full user-image "
+           title="tphoto"
+           alt="Therapist Photo"
+      />
+      
+      <div class="flex justify-between">
+        <div class="tname text-xl float-left p-4">Sophia Grace <span class="font-light">Dr.</span></div>
+      
+        <div class="tinfo text-lg float-right text-gray-500 p-4">
+          <i class="fas fa-calendar pr-2"></i>
+        </div>
+      </div>
+      
+      <div class="pl-4 text-gray-400">
+        <p>Psychologist</p>
+        <p>Nairobi West Hospital</p>
+      </div>
+      <div class="flex items-center justify-center w-full h-full pt-12">
+       <a class=" text-blue-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm"href="therapistProfile.php">Visit Profile</a>
+      </div>
+    </div>
+    <!--Previous Arrow-->
+    <div>
+      <i class="fas fa-arrow-right fa-6x text-green-300"></i>
+    </div>
+
+    
+    
+    
+  </div>
+
+</div>
+
 <?php
   include "scripts.php";
   ?>
