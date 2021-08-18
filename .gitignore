@@ -11,6 +11,9 @@ node_modules/
 composer.json
 composer.lock
 vendor/
+crash-1.txt
+crash-2.txt
+crash.txt
 
 
 # Executables
