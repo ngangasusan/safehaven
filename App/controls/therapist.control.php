@@ -29,6 +29,28 @@
 </head>
 
 <body>
+  <?php
+  $firstname = "";
+  $lastname = "";
+  $email = "";
+  $phoneNumber = "";
+  $hospital = "";
+  $specialty = "";
+
+  //dependent on who is logged in
+  $labelText = "Therapist Details";
+  $buttonText = "Book Appointment";
+
+  //actions that can be performed
+  $action = "v";
+  
+  //set Id to the therapist one wants to see the profile
+  //$id = ;
+
+  //fetch the therapists profile
+  $therapistInfo = $dbmanager->query(DbManager::USER_TABLE,["*"],"userId = ?", [$id]);
+
+  ?>
   <!-- Navbar -->
   <nav class="
         flex flex-col
@@ -134,26 +156,27 @@
         <!-- <i class="fas fa-caret-down dropdown-menu"></i> -->
         </li>
         <li class="flex-1 md:flex-none md:mr-3">
-                <div class="relative inline-block">
-                    <button onclick="toggleDD('myDropdown')" class="drop-button text-white focus:outline-none"> <span class="pr-2"><i class="far fa-user"></i></span> <?php echo $username?> <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg></button>
-                    <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
-                        <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
-                        <a href="editProfile.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
-                        <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
-                        <div class="border border-gray-800"></div>
-                        <a href="logout.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
-                    </div>
-                </div>
-            </li>
+          <div class="relative inline-block">
+              <button onclick="toggleDD('myDropdown')" class="drop-button text-white focus:outline-none"> <span class="pr-2"><i class="far fa-user"></i></span> <?php echo $username?> <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg></button>
+              <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
+                  <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
+                  <a href="editProfile.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
+                  <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
+                  <div class="border border-gray-800"></div>
+                  <a href="logout.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
+              </div>
+          </div>
+        </li>
       </div>
     </ul>
   </nav>
 
   <!--Button for adding users-->
   <div>
-        <i class="fas fa-user-plus"></i>
-      <button>Add User</button>
+    <a href="../therapistProfile.php"><i class="fas fa-user-plus p-6"><span><button>Add User</button></span></i></a>
+      
+      <!--<button>Add User</button>-->
   </div>
   
   <!--Table with user details-->
@@ -163,41 +186,41 @@
             <div class="border-b border-gray-200 shadow p-6">
                 <table>
                 <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    User ID
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    First Name
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Last Name
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Email Address
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Field
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Hospital
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                  Phone Number
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                  Type
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                  Edit
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                  Delete
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                  Disable
-                                </th>
-                            </tr>
+                  <tr>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                          User ID
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                          First Name
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                          Last Name
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                          Email Address
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                          Field
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                          Hospital
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                        Phone Number
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                        Type
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                        Edit
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                        Delete
+                      </th>
+                      <th class="px-6 py-2 text-xs text-gray-500">
+                        Disable
+                      </th>
+                  </tr>
                     <tbody class="bg-white">
                     <?php
                         foreach($tabledata as $row){?>
@@ -232,8 +255,6 @@
                             <td class="px-6 py-4">
                               <?php echo $row['userType']?>
                             </td>
-                            
-                            
                             <td class="px-6 py-4">
                               <a href='<?PHP echo "../register.php?edit=" . $row['userId']; ?>'><i class="fas fa-edit"></i></a>
                             </td>
@@ -245,12 +266,7 @@
                               <a href=""><i class="fas fa-user-slash"></i></a>
                             </td>
                         </tr>
-                        
                         <?php }?>
-
-                        
-                      
-  
                     </tbody>
                 </table>
 

@@ -5,6 +5,8 @@
  $dbmanager =  New DbManager();
  $dbmanager->setFetchAll(true);
  $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["therapist"]);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +23,6 @@
   <!--Icon-->
   <link rel="icon" href="assets/img/logo.png" sizes="48x48" />
 </head>
-
 <body>
   <!-- Navbar -->
   <nav class="
@@ -134,69 +135,53 @@
       </div>
     </ul>
   </nav>
-  
-<!--Display registered therapists-->
-<div>
-  <!--Therapists Picture
-  <div></div>
-  Therapists name-->
-  <div class="tbg mx-auto my-0 mt-3 bg-white">
-    <!--Settings-->
-  <div class="theader flex justify-between">
-    <div class="flex items-center text-gray-500 text-center px-5">
-      <i class="fa fa-cog" aria-hidden="true"></i>
+
+  <!--Booking Appointment-->
+  <div class="flex flex-col sm:flex sm:flex-row-reverse bg-gray-50 rounded-md w-full sm:w-8/12 sm:mx-auto sm:mt-20 shadow overflow-hidden mb-10">
+    <!--Left with logo-->
+    <div class="flex flex-col justify-center items-center bg-white p-6 m-0 sm:w-6/12 w-full">
+      <img src="./assets/img/logo.png" alt="" class="w-32 sm:w-64">
+      <span class="text-green-400 text-3xl">Safe Haven</span>
+      <p class="my-4 text-gray-500">A step away from clarity</p>
     </div>
-    <!--Comments icon-->
-    <div class="flex items-center text-gray-500 text-center px-5">
-      <i class="fa fa-comments" aria-hidden="true"></i>
-    </div>
-  </div>
-  
-  <!--Therapists Details-->
-  <div class="px-10 flex flex-row items-center sm:justify-between">
-    <!--Previous Arrow-->
-    <div>
-      <i class="fas fa-arrow-left fa-6x text-green-300"></i>
-    </div>
-    <!--Therapist Card-->
-    <div class="tphoto rounded-lg border border-gray-400 shadow-lg items-center">
-      <!--<img src="./assets/img/tempusers/therapist1.jpg"-->
-      <img src="./storage/profile_images/<?php echo $profilepic?>" 
-           class="w-full user-image "
-           title="tphoto"
-           alt="Therapist Photo"
-      />
-      
-      <div class="flex justify-between">
-        <div class="tname text-xl float-left p-4">Sophia Grace<span class="font-light">Dr.</span></div>
-        <div class="tinfo text-lg float-right text-gray-500 p-4">
-          <i class="fas fa-calendar pr-2"></i>
+    
+    
+    <!--Right with appointment details-->
+    <div class="flex flex-col flex-grow items-center p-6">
+    <div class="w-full p-4 flex flex-row justify-start items-center mb-6">
+        <img src="assets/img/logo.png" alt="logo" class="w-12">
+        <span class="text-xs font-bold text-gray-500">Appointment Details</span>
+      </div>
+
+      <form class="flex justify-around flex-col p-4" id="registerForm" method="GET">
+        <!--Appointment Date-->
+        <div class="flex flex-col mb-6">
+          <label for="date" class="text-gray-500 text-xs font-bold mb-2 ml-2">Select the appointment date</label>
+          <input type="date" name="date" id="date" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
         </div>
-      </div>
-      
-      <div class="pl-4 text-gray-400">
-        <p>Psychologist</p>
-        <p>Nairobi West Hospital</p>
-      </div>
-      <div class="flex items-center justify-center w-full h-full pt-12">
-       <a class=" text-blue-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm"href="therapistProfile.php">Visit Profile</a>
-      </div>
-    </div>
-    <!--Previous Arrow-->
-    <div>
-      <i class="fas fa-arrow-right fa-6x text-green-300"></i>
-    </div>
 
+        <!--Start time-->
+        <div class="flex flex-col mb-6">
+            <label for="starttime" class="text-gray-500 text-xs font-bold mb-2 ml-2">Start time</label>
+            <input type="time" name="starttime" id="starttime" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+        </div>
+        <!--End time-->
+        <div class="flex flex-col mb-6">
+            <label for="endtime" class="text-gray-500 text-xs font-bold mb-2 ml-2">End time</label>
+            <input type="time" name="endtime" id="endtime" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+        </div>
+        <!--Duration-->
+        <div class="flex flex-col mb-6">
+            <label for="duration" class="text-gray-500 text-xs font-bold mb-2 ml-2">Session Length</label>
     
-    
-    
+        </div>
+
+        <!--Book An Appointment-->
+        <div class="flex flex-col mb-4">
+          <button type="button" id="appointment-btn" name="appointment-btn" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Book Appointment</button>
+        </div>
+      </form>
+    </div>
   </div>
-
-</div>
 </body>
-
-<?php
-  include "scripts.php";
-  ?>
-
 </html>

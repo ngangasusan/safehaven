@@ -122,13 +122,3 @@ function updateUser() {
     main_ajax_with_call_back(handleRegisterResponse,"./logic/procedures/register.procedure.php",data, "POST",false);
 
 }
-function check(){
-    if (question) {
-       return true; 
-    }
-    else{
-        alert("Chosen not to delete.");
-        return false;
-    }
-    
-}

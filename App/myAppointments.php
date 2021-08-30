@@ -2,9 +2,6 @@
  session_start();
  include "./classloader.inc.php";
 
- $dbmanager =  New DbManager();
- $dbmanager->setFetchAll(true);
- $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["therapist"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +52,7 @@
       <!--Home-->
       <li class="mb-4 sm:mb-0">
         <a href="index.php" class="
-              text-gray-500
+              text-green-200
               px-6
               py-3
               hover:bg-green-200
@@ -67,13 +64,12 @@
       <!--Therapists-->
       <li class="mb-4 sm:mb-0">
         <a href="therapists.php" class="
-              text-green-200
+              text-gray-500
               px-6
               py-3
               hover:bg-green-200
               rounded-md
               text-sm
-              font-bold
             ">Therapists</a>
       </li>
 
@@ -134,67 +130,32 @@
       </div>
     </ul>
   </nav>
-  
-<!--Display registered therapists-->
-<div>
-  <!--Therapists Picture
-  <div></div>
-  Therapists name-->
-  <div class="tbg mx-auto my-0 mt-3 bg-white">
-    <!--Settings-->
-  <div class="theader flex justify-between">
-    <div class="flex items-center text-gray-500 text-center px-5">
-      <i class="fa fa-cog" aria-hidden="true"></i>
-    </div>
-    <!--Comments icon-->
-    <div class="flex items-center text-gray-500 text-center px-5">
-      <i class="fa fa-comments" aria-hidden="true"></i>
-    </div>
-  </div>
-  
-  <!--Therapists Details-->
-  <div class="px-10 flex flex-row items-center sm:justify-between">
-    <!--Previous Arrow-->
-    <div>
-      <i class="fas fa-arrow-left fa-6x text-green-300"></i>
-    </div>
-    <!--Therapist Card-->
-    <div class="tphoto rounded-lg border border-gray-400 shadow-lg items-center">
-      <!--<img src="./assets/img/tempusers/therapist1.jpg"-->
-      <img src="./storage/profile_images/<?php echo $profilepic?>" 
-           class="w-full user-image "
-           title="tphoto"
-           alt="Therapist Photo"
-      />
-      
-      <div class="flex justify-between">
-        <div class="tname text-xl float-left p-4">Sophia Grace<span class="font-light">Dr.</span></div>
-        <div class="tinfo text-lg float-right text-gray-500 p-4">
-          <i class="fas fa-calendar pr-2"></i>
+  <!--Appointment details card-->
+  <div class="flex flex-wrap">
+    <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+        <!--Appointment One-->
+        <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-5">
+            <div class="flex flex-row items-center">
+                 <!--Therapists profile photo-->
+                <div class="flex-shrink pr-4">
+                    <div class="rounded-full p-5 bg-green-600"><i class="fas fa-user fa-2x fa-inverse"></i></div>
+                </div>
+                <div class="flex-1 text-right md:text-center">
+                    <h5 class="font-bold uppercase text-gray-600">Therapist Name</h5>
+                    <!--Therapy time-->
+                    <h3 class=" text-3xl"><span class="text-green-500"><i class="fas fa-clock"></i></span>11:00 - 11:30</h3>
+                    <!--Therapy date-->
+                    <h3 class="text-3xl"><span class="text-green-500"><i class="fas fa-calendar"></i></span>11:00 - 11:30</h3>
+                </div>
+            </div>
         </div>
-      </div>
-      
-      <div class="pl-4 text-gray-400">
-        <p>Psychologist</p>
-        <p>Nairobi West Hospital</p>
-      </div>
-      <div class="flex items-center justify-center w-full h-full pt-12">
-       <a class=" text-blue-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm"href="therapistProfile.php">Visit Profile</a>
-      </div>
+        <!--/End of appointment one card-->
     </div>
-    <!--Previous Arrow-->
-    <div>
-      <i class="fas fa-arrow-right fa-6x text-green-300"></i>
-    </div>
-
-    
-    
-    
   </div>
 
-</div>
-</body>
 
+
+</body>
 <?php
   include "scripts.php";
   ?>

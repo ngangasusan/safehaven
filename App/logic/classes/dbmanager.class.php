@@ -13,7 +13,8 @@ class DbManager implements DatabaseInterface{
 
 	const USER_TABLE = "user",
 	      USER_ID = "`user`.`userId`";
-
+	
+	const THERAPIST_TABLE = "therapist";
 
 
     /**

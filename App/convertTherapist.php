@@ -138,69 +138,47 @@ include "./classloader.inc.php";
     <div>
       <img class="inline object-cover w-16 h-16 mr-2 rounded-full" src="./storage/profile_images/<?php echo $profilepic?>" alt="Profile image" />
     </div>
-    <!--Upgrade to therapist-->
-    <div>
-      <button id="upgrade-btn" name="upgrade-btn" class="text-gray-500 font-bold bg-gray-100 rounded-md p-2 m-6" onclick="window.location.href='convertTherapist.php';">Upgrade To A Therapist </button>
-    </div>
-  </div>
 
 
   <!--User Details-->
   <!--"w-6/12 mx-auto flex flex-col p-6 border rounded-sm mt-6 shadow text-gray-500 mb-6"-->
   <div class="flex flex-col sm:flex sm:w-6/12 sm:mx-auto sm:mt-20 bg-gray-50 rounded-md w-full mb-6">
 
+   <!--Displaying errors-->
+   <div id="error" class="opacity-100 transition-all text-red-600 py-2 px-4 rounded-3xl"></div>
+   <div id="success-display" class="opacity-100 transition-all text-green-500 py-2 px-4 rounded-3xl"></div>
+
     <!--Form with details-->
     <div>
-      <form class="flex justify-around flex-col p-4" id="registerForm" method="GET">
-        <div class="flex">
-          <!--First Name-->
-          <div>
-            <label for="firstname" class="text-gray-500 text-xs font-bold mb-2 ml-2">First Name</label>
-            <input type="text" name="firstname" id="firstname" onkeyup="nameInputVerify(this)" value="<?php echo $firstname ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your first name" disabled>
-          </div>
-
-          <!--Last Name-->
-          <div>
-            <label for="lastname" class="text-gray-500 text-xs font-bold mb-2 ml-2">Last Name</label>
-            <input type="text" name="lastname" id="lastname" onkeyup="nameInputVerify(this)" value="<?php echo $lastname ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your last name" disabled>
-          </div>
-        </div>
-        <!--Email-->
+      <form class="flex justify-around flex-col p-4" id="upfateForm" method="POST">
+        <!--specialty-->
         <div class="flex flex-col mb-6">
-          <label for="email" class="text-gray-500 text-xs font-bold mb-2 ml-2">Email address</label>
-          <input type="email" name="email" id="email" onkeyup="emailInputVerify(this)" value="<?php echo $email ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your email address" disabled>
+          <label for="specialty" class="text-gray-500 text-xs font-bold mb-2 ml-2">Specialty</label>
+          <input type="text" name="specialty" id="specialty" onkeyup="nameInputVerify(this)" value="Psychologist" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your area of expertise">
         </div>
 
 
         <!--Phone number-->
         <div class="flex flex-col mb-6">
-          <label for="phone" class="text-gray-500 text-xs font-bold mb-2 ml-2">Mobile Number</label>
-          <input type="tel" name="phone" id="phone" onkeyup="nameInputVerify(this)" value="<?php echo $phonenumber ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your phone number" disabled>
+          <label for="hospital" class="text-gray-500 text-xs font-bold mb-2 ml-2">Hospital</label>
+          <input type="text" name="hospital" id="hospital" onkeyup="nameInputVerify(this)" value="Coptic" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your hospital/ where you work">
         </div>
 
         <!--Hidden input field-->
         <input type="hidden" id="action" name="action" value="<?php echo $action ?>">
         <input type="hidden" id="id" name="id" value="<?php echo $id ?>">
 
-        <!--Registration Button-->
+        <!--Upgrade Account-->
         <div class="flex flex-col mb-4">
-          <!--<button type="button" id="register-btn" name="register-btn" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Edit details</button>-->
-          <a class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold" href='<?PHP echo "./register.php?edit=" . $userInfo['userId']; ?>'>Edit Profile</a>
+            <button type="button" id="upgrade-btn" class="rounded-md text-white bg-green-400 w-full py-2 px-4 text-xs font-bold">Upgrade Account</button>
         </div>
-
-        <?php if (!$_SESSION['userId']) { ?>
-          <!--Recovery-->
-          <div class="flex flex-col items-center text-gray-500 text-sm">
-            <span class="mb-3">Already have an account? <a href="login.php" class="text-blue-500 hover:underline">Login</a></span>
-          <?php } ?>
-          </div>
       </form>
     </div>
   </div>
+  <?php
+    include "scripts.php";
+    ?>
+    <script src="./js/upgrade.js"></script>
 
 </body>
-<?php
-include "scripts.php";
-?>
-
 </html>
