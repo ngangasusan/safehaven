@@ -11,7 +11,7 @@ $email = "";
 $phonenumber = "";
 $action = "r";
 //if user clicks on the sign up button
-
+//mail('suengangaw@gmail.com','TestSubject','Hello There!','From: safehavenkenya@gmail.com');
 $post = array_map("urldecode", $_POST);
 
 $firstname = $post['firstname'];
@@ -45,15 +45,27 @@ switch ($action) {
             }
             $password = password_hash($password,  PASSWORD_DEFAULT);
 
-            //Token for email verification
-            $token = bin2hex(random_bytes(50));
+            //Generate verification key
+            $vkey = md5(time(). $firstname);
+            
 
             //
             $verified = false;
 
             //insert to db
-            $userId = $dbmanager->insert(DbManager::USER_TABLE, ["firstname", "lastname", "email", "password", "userType", "verified", "token"], [$firstname, $lastname, $email, $password, "patient", $verified, $token]);
+            $userId = $dbmanager->insert(DbManager::USER_TABLE, ["firstname", "lastname", "email", "password", "userType", "verified", "token"], [$firstname, $lastname, $email, $password, "patient", $verified, $vkey]);
 
+            
+            //email verification
+            $to = $email;
+            $subject = "Email Verification";
+            $message = "'http://localhost:3000/App/therapists.php'";
+            $headers = "From: safehavenkenya@gmail.com \r\n";
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+            //mail($to,$subject,$message,$headers);
+            mail($to,$subject,$message,'From: safehavenkenya@gmail.com');
 
             $_SESSION['userId'] = $userId;
             $_SESSION['userType'] = "patient";
@@ -158,8 +170,20 @@ switch ($action) {
     default:
         break;
 }
+exit(Response::make("OK", "You have Successfully Registered"));
+// if(exit(Response::make("OK", "You have Successfully Registered")))
+// {
+//     //email verification
+//     $to = $email;
+//     $subject = "Email Verification";
+//     $message = "<a href='http://localhost/registration/verify.php?vkey=$vkey'>Register Account</a>";
+//     $headers = "From: safehavenkenya@gmail.com \r\n";
+//     $headers = "MIME-Version: 1.0" . "\r\n";
+//     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+//     header('location:home.php');
 
-exit(Response::make("OK", "You have Successfully Registered")); //
+//     mail($to,$subject,$message,$headers);
+// } 
         
 
             /*if this is executed, register the user and log them in

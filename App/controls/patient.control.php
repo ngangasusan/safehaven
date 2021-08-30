@@ -9,7 +9,6 @@ $dbmanager->setFetchAll(true);
 //$tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "1 LIMIT 0, 100", []);
 $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["patient"]);
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

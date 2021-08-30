@@ -2,10 +2,18 @@
  session_start();
  include "./classloader.inc.php";
 
- $dbmanager =  New DbManager();
- $dbmanager->setFetchAll(true);
- $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["therapist"]);
+  //$dbmanager = New DbManager();
+  //  $dbmanager->setFetchAll(true);
+  //  //$tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "1 LIMIT 0, 100", []);
+  //  $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["therapists"]); 
+  $db  = new PDO('mysql:host=localhost;dbname=safehaven_db', 'root', '');
+  $therapistSql = "SELECT * FROM user INNER JOIN therapist ON user.userId = therapist.therapistId";
+  $stmt = $db->query($therapistSql);
+  $stmt->execute();
 ?>
+
+ 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -134,65 +142,42 @@
       </div>
     </ul>
   </nav>
-  
-<!--Display registered therapists-->
-<div>
-  <!--Therapists Picture
-  <div></div>
-  Therapists name-->
-  <div class="tbg mx-auto my-0 mt-3 bg-white">
-    <!--Settings-->
-  <div class="theader flex justify-between">
-    <div class="flex items-center text-gray-500 text-center px-5">
-      <i class="fa fa-cog" aria-hidden="true"></i>
-    </div>
-    <!--Comments icon-->
-    <div class="flex items-center text-gray-500 text-center px-5">
-      <i class="fa fa-comments" aria-hidden="true"></i>
-    </div>
-  </div>
-  
-  <!--Therapists Details-->
-  <div class="px-10 flex flex-row items-center sm:justify-between">
-    <!--Previous Arrow-->
-    <div>
-      <i class="fas fa-arrow-left fa-6x text-green-300"></i>
-    </div>
-    <!--Therapist Card-->
-    <div class="tphoto rounded-lg border border-gray-400 shadow-lg items-center">
-      <!--<img src="./assets/img/tempusers/therapist1.jpg"-->
-      <img src="./storage/profile_images/<?php echo $profilepic?>" 
-           class="w-full user-image "
-           title="tphoto"
-           alt="Therapist Photo"
-      />
-      
-      <div class="flex justify-between">
-        <div class="tname text-xl float-left p-4">Sophia Grace<span class="font-light">Dr.</span></div>
-        <div class="tinfo text-lg float-right text-gray-500 p-4">
-          <i class="fas fa-calendar pr-2"></i>
+<!--Therapists List-->
+<div class="flex flex-col bg-white p-5 m-5">
+<?php foreach($therapistSql as $row){?>
+  <div class="flex overflow-x-scroll pb-10 hide-scroll-bar">
+    <div class="flex flex-nowrap lg:ml-40 md:ml-20 ml-10 ">
+      <!--Therapist-->
+      <div class="inline-block px-3">
+        <div class="w-64 h-64 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+          <!--Profile Picture-->
+          <div class="tphoto rounded-lg border border-gray-400 shadow-lg items-center">
+            <img src="./assets/img/tempusers/therapist1.jpg" class="w-full user-image " alt="Therapist Photo"/>
+          </div>
+          <!--Name-->
+          <div class="text-xl float-left p-4"><?php echo $row['firstname']?></div>
+          <!--Hospital-->
+          <div class="pl-4 text-gray-400">
+            <p>Psychologist</p>
+            <p><?php echo $row['hospital']?></p>
+          </div>
+          <!--View Profile Button-->
         </div>
-      </div>
-      
-      <div class="pl-4 text-gray-400">
-        <p>Psychologist</p>
-        <p>Nairobi West Hospital</p>
-      </div>
-      <div class="flex items-center justify-center w-full h-full pt-12">
-       <a class=" text-blue-500 px-6 py-3 hover:bg-green-200 rounded-md text-sm"href="therapistProfile.php">Visit Profile</a>
-      </div>
+        <?php } ?>
     </div>
-    <!--Previous Arrow-->
-    <div>
-      <i class="fas fa-arrow-right fa-6x text-green-300"></i>
-    </div>
-
-    
-    
-    
   </div>
 
 </div>
+<style>
+.hide-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
+}
+</style>
+          
 </body>
 
 <?php

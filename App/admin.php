@@ -156,8 +156,17 @@
                                 <div class="rounded-full p-5 bg-green-600"><i class="fas fa-users fa-2x fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
+                               <?php
+                                $db  = new PDO('mysql:host=localhost;dbname=safehaven_db', 'root', '');
+                                $Sql = "SELECT count(*) as `total` FROM user";
+                                $stmt = $db->query($Sql);
+                                $stmt->execute();
+                                $total = $stmt->fetch(PDO::FETCH_ASSOC);
+                                //print_r($total);
+                                
+                              ?>
                                 <h5 class="font-bold uppercase text-gray-600">Number of Users</h5>
-                                <h3 class="font-bold text-3xl">150 <span class="text-green-500"><i class="fas fa-users"></i></span></h3>
+                                <h3 class="font-bold text-3xl"><?php echo implode(" ",$total);?><span class="text-green-500"><i class="fas fa-users"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -172,8 +181,17 @@
                                 <div class="rounded-full p-5 bg-green-600"><i class="fas fa-users fa-2x fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
+                            <?php
+                                $db  = new PDO('mysql:host=localhost;dbname=safehaven_db', 'root', '');
+                                $Sql = "SELECT count(*) as `total` FROM therapist";
+                                $stmt = $db->query($Sql);
+                                $stmt->execute();
+                                $total = $stmt->fetch(PDO::FETCH_ASSOC);
+                                //print_r($total);
+                                
+                              ?>
                                 <h5 class="font-bold uppercase text-gray-600">Number of Therapists</h5>
-                                <h3 class="font-bold text-3xl">110<span class="text-green-500"><i class="fas fa-users"></i></span></h3>
+                                <h3 class="font-bold text-3xl"><?php echo implode(" ",$total);?><span class="text-green-500"><i class="fas fa-users"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -189,8 +207,17 @@
                                 <div class="rounded-full p-5 bg-green-600"><i class="fas fa-users fa-2x fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
-                                <h5 class="font-bold uppercase text-gray-600">Number of Patients</h5>
-                                <h3 class="font-bold text-3xl">40 <span class="text-green-500"><i class="fas fa-users"></i></span></h3>
+                            <?php
+                                $db  = new PDO('mysql:host=localhost;dbname=safehaven_db', 'root', '');
+                                $Sql = "SELECT count(*) as `total` FROM user WHERE userType = 'patient'";
+                                $stmt = $db->query($Sql);
+                                $stmt->execute();
+                                $total = $stmt->fetch(PDO::FETCH_ASSOC);
+                                //print_r($total);
+                                
+                              ?>
+                                <h5 class="font-bold uppercase text-gray-600">Number of Therapists</h5>
+                                <h3 class="font-bold text-3xl"><?php echo implode(" ",$total);?><span class="text-green-500"><i class="fas fa-users"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -206,7 +233,7 @@
                             </div>
                             <div class="flex-1 text-right md:text-center">
                                 <h5 class="font-bold uppercase text-gray-600">Community Posts</h5>
-                                <h3 class="font-bold text-3xl">7 posts</h3>
+                                <h3 class="font-bold text-3xl">Unavailable</h3>
                             </div>
                         </div>
                     </div>

@@ -61,29 +61,6 @@
             ">Home</a>
       </li>
 
-      <!--Therapists-->
-      <li class="mb-4 sm:mb-0">
-        <a href="therapists.php" class="
-              text-gray-500
-              px-6
-              py-3
-              hover:bg-green-200
-              rounded-md
-              text-sm
-            ">Therapists</a>
-      </li>
-
-      <!--Community-->
-      <li>
-        <a href="community.php" class="
-              text-gray-500
-              px-6
-              py-3
-              hover:bg-green-200
-              rounded-md
-              text-sm
-            ">Community</a>
-      </li>
 
       <?php
       $dbmanager = New DbManager();
