@@ -5,7 +5,19 @@
  $dbmanager =  New DbManager();
  $dbmanager->setFetchAll(true);
  $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["therapist"]);
+ $therapist = 0;
 
+ //therapist id
+ if(!isset($_GET["i"])){
+  ?>
+  <script>
+    history.back();
+  </script>
+  <?php
+ }
+ else{
+  $therapist = (int)$_GET["i"];
+ }
 
 ?>
 <!DOCTYPE html>
@@ -124,7 +136,7 @@
                     <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
                         <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
                         <a href="profile.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
-                        <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="far fa-calendar-check"></i></i> My Appointments</a>
+                        <a href="bookedAppointment.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="far fa-calendar-check"></i></i> My Appointments</a>
                         <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-users"></i> Therapists</a>
                         <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
                         <div class="border border-gray-800"></div>
@@ -154,34 +166,43 @@
       </div>
 
       <form class="flex justify-around flex-col p-4" id="registerForm" method="GET">
-        <!--Appointment Date-->
+       <!--Displaying errors-->
+        <div id="error" class="opacity-100 transition-all text-red-600 py-2 px-4 rounded-3xl"></div>
+        <div id="success-display" class="opacity-100 transition-all text-green-500 py-2 px-4 rounded-3xl"></div>
+      
+       <!--Appointment Date-->
         <div class="flex flex-col mb-6">
           <label for="date" class="text-gray-500 text-xs font-bold mb-2 ml-2">Select the appointment date</label>
-          <input type="date" name="date" id="date" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+          <input type="date" name="date" id="a-date" min="date()" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
         </div>
 
         <!--Start time-->
         <div class="flex flex-col mb-6">
             <label for="starttime" class="text-gray-500 text-xs font-bold mb-2 ml-2">Start time</label>
-            <input type="time" name="starttime" id="starttime" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+            <input type="time" name="starttime" id="s-time" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
         </div>
         <!--End time-->
         <div class="flex flex-col mb-6">
             <label for="endtime" class="text-gray-500 text-xs font-bold mb-2 ml-2">End time</label>
-            <input type="time" name="endtime" id="endtime" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+            <input type="time" name="endtime" id="e-time" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
         </div>
         <!--Duration-->
         <div class="flex flex-col mb-6">
             <label for="duration" class="text-gray-500 text-xs font-bold mb-2 ml-2">Session Length</label>
     
         </div>
+        <input type="hidden" value="<?php echo $therapist ?>" id="t-id">
 
         <!--Book An Appointment-->
         <div class="flex flex-col mb-4">
           <button type="button" id="appointment-btn" name="appointment-btn" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Book Appointment</button>
         </div>
       </form>
+      
     </div>
   </div>
+  <script src="js/main.js"></script>
+  <script src="js/book.js"></script>
 </body>
+
 </html>

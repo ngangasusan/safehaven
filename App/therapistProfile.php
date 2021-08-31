@@ -1,12 +1,5 @@
 <?php
  session_start();
- include "./classloader.inc.php";
-
- $dbmanager =  New DbManager();
- $dbmanager->setFetchAll(true);
- $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["therapist"]);
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,20 +84,38 @@
       </li>
 
       <?php
-      $dbmanager = New DbManager();
-      $userInfo = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userId = ?", [$_SESSION['userId']]);
-      $firstname = $lastname = $email = "";
-      if ($userInfo!==false) {
-        $firstname = $userInfo['firstname'];
-        $lastname = $userInfo['lastname'];
-        $email = $userInfo['email'];
-       // $verified = $userInfo['verified'];
-      }
-      else{
-        //echo "User info is false";
-        echo "User id is ".$_SESSION['userId'];
-      }
-      ?>
+  include "./classloader.inc.php";
+ 
+  $firstname = "";
+  $lastname = "";
+  $email = "";
+  $phonenumber = "";
+  $hospital = "";
+  $specialty = "";
+
+
+  $id = 0;
+
+  if (isset($_GET['view']) && (int)$_GET['view'] > 1) {
+    $id = (int)$_GET['view'];
+
+    $dbmanager = new DbManager();
+    $userinfo = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userId = ?", [$id]);
+    $userInfo = $dbmanager->query(DbManager::THERAPIST_TABLE, ["*"], "therapistId = ?", [$id]);
+
+    if ($userinfo !== false) {
+      $firstname = $userinfo['firstname'];
+      $lastname = $userinfo['lastname'];
+      $email = $userinfo['email'];
+      $phonenumber = $userinfo['phonenumber'];
+      $specialty = $userInfo['specialty'];
+      $hospital = $userInfo['hospital'];
+      $profilepic = $userinfo['profile_picture'];
+
+    }
+  }
+  ?>
+
 
       <div class="px-5 flex flex-row bg-green-300 p-4 rounded-xl">
         <!--Username-->
@@ -144,8 +155,8 @@
     <!--Left with logo-->
     <div class="flex flex-col justify-center items-center bg-white p-6 m-0 sm:w-6/12 w-full">
       <!--<img src="assets/img/logo.png" alt="logo" class="w-32 sm:w-64">-->
-      <img src="./assets/img/tempusers/therapist1.jpg" alt="" class="w-32 sm:w-64">
-      <span class="text-green-300 text-3xl">Dr. Alexandria</span>
+      <img src="./storage/profile_images/<?php echo $row['profile_picture']?>" alt="Therapists Profile" class="w-32 sm:w-64">
+      <span class="text-green-300 text-3xl"><?php echo $firstname ." " .$lastname?></span>
       <p class="my-4 text-gray-500">Member Since: 2010</p>
       <div class="space-x-4">
         <a href="./message.php"><i class="fas fa-comment"></i></a>
@@ -174,41 +185,44 @@
           <!--First Name-->
           <div>
             <label for="firstname" class="text-gray-500 text-xs font-bold mb-2 ml-2">First Name</label>
-            <input type="text" name="firstname" id="firstname"  class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+            <input type="text" name="firstname" id="firstname"  class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="<?php echo $firstname ?>" disabled>
           </div>
 
           <!--Last Name-->
           <div>
             <label for="lastname" class="text-gray-500 text-xs font-bold mb-2 ml-2">Last Name</label>
-            <input type="text" name="lastname" id="lastname" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+            <input type="text" name="lastname" id="lastname" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="<?php echo $lastname ?>" disabled>
           </div>
         </div>
         <!--Email-->
         <div class="flex flex-col mb-6">
           <label for="email" class="text-gray-500 text-xs font-bold mb-2 ml-2">Email address</label>
-          <input type="email" name="email" id="email" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+          <input type="email" name="email" id="email" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="<?php echo $email ?>" disabled>
         </div>
         
         <!--Phone number-->
         <div class="flex flex-col mb-6">
             <label for="phone" class="text-gray-500 text-xs font-bold mb-2 ml-2">Mobile Number</label>
-            <input type="tel" name="phone" id="phone" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+            <input type="tel" name="phone" id="phone" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="<?php echo $phonenumber ?>" disabled>
         </div>
 
         <!--Hospital-->
         <div class="flex flex-col mb-6">
             <label for="hospital" class="text-gray-500 text-xs font-bold mb-2 ml-2">Hospital</label>
-            <input type="text" name="hospital" id="hospital" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+            <input type="text" name="hospital" id="hospital" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="<?php echo $hospital ?>" disabled>
         </div>
         <!--Specialty-->
         <div class="flex flex-col mb-6">
             <label for="specialty" class="text-gray-500 text-xs font-bold mb-2 ml-2">Specialty</label>
-            <input type="text" name="specialty" id="specialty" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none">
+            <input type="text" name="specialty" id="specialty" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" value="<?php echo $specialty ?>" disabled>
         </div>        
         
+    
         <!--Book An Appointment-->
         <div class="flex flex-col mb-4">
-          <button type="button" id="register-btn" name="register-btn" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Book Appointment</button>
+          <!--<button type="button" id="register-btn" name="register-btn" class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Book Appointment</button>-->
+          <a href='<?php echo "bookAppointment.php?i=" .$id?>' class="rounded-md text-white bg-green-300 w-full py-2 px-4 text-xs font-bold">Book Appointment</a>
+          
         </div>
       </form>
     </div>

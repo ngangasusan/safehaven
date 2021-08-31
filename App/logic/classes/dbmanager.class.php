@@ -15,6 +15,7 @@ class DbManager implements DatabaseInterface{
 	      USER_ID = "`user`.`userId`";
 	
 	const THERAPIST_TABLE = "therapist";
+	const APPOINTMENT_TABLE = "appointment";
 
 
     /**
@@ -69,18 +70,22 @@ class DbManager implements DatabaseInterface{
 	 *
 	 * @return array|bool
 	 */
-	public function query($table, $columns, $condition_string, $condition_values) {
+	public function query($table, $columns, $condition_string, $condition_values, $add_ticks = true) {
 		$this->connect();
-		
-		$sql = "SELECT " . implode (",",$columns) ." from `$table` where $condition_string";
-			//echo $sql;
-			//var_dump($condition_values);
-            $stmt = $this->dbConnection->prepare($sql);
-			$return = false;
 
+		if($add_ticks === true){
+			$table = "`$table`";
+		}
+
+		$sql = "SELECT " . implode (", ", $columns) ." from $table where $condition_string";
+
+            $stmt = $this->dbConnection->prepare($sql);
             if($stmt->execute($condition_values)){
                 $result = ($this->fetchAll)? $stmt->fetchAll() : $stmt->fetch();
                 $return = $result;
+            }
+            else{
+                $return = false;
             }
 			return $return;
 	}

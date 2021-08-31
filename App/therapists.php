@@ -2,14 +2,11 @@
  session_start();
  include "./classloader.inc.php";
 
-  //$dbmanager = New DbManager();
-  //  $dbmanager->setFetchAll(true);
-  //  //$tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "1 LIMIT 0, 100", []);
-  //  $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["therapists"]); 
-  $db  = new PDO('mysql:host=localhost;dbname=safehaven_db', 'root', '');
-  $therapistSql = "SELECT * FROM user INNER JOIN therapist ON user.userId = therapist.therapistId";
-  $stmt = $db->query($therapistSql);
-  $stmt->execute();
+  $dbmanager = New DbManager();
+  $dbmanager->setFetchAll(true);
+  $therapistInfo = $dbmanager->query("`user` INNER JOIN therapist ON user.userId = therapist.therapistId", ["*"],"1",[],false);
+
+  //var_dump($therapistInfo);
 ?>
 
  
@@ -105,6 +102,8 @@
         $firstname = $userInfo['firstname'];
         $lastname = $userInfo['lastname'];
         $email = $userInfo['email'];
+        $profilepic = $userInfo['profile_picture'];
+        $usertype = $userInfo['userType'];
        // $verified = $userInfo['verified'];
       }
       else{
@@ -131,7 +130,12 @@
                     <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
                         <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
                         <a href="profile.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
-                        <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="far fa-calendar-check"></i></i> My Appointments</a>
+                        <?php if($usertype == "therapist"){?>
+                         <a href="bookedAppointments.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="far fa-calendar-check"></i></i> My Appointments</a>
+                        <?php }else {?>
+                        
+                          <a href="myAppointments.php" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="far fa-calendar-check"></i></i> My Appointments</a>
+                        <?php }?>
                         <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-users"></i> Therapists</a>
                         <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
                         <div class="border border-gray-800"></div>
@@ -142,31 +146,43 @@
       </div>
     </ul>
   </nav>
-<!--Therapists List-->
-<div class="flex flex-col bg-white p-5 m-5">
-<?php foreach($therapistSql as $row){?>
-  <div class="flex overflow-x-scroll pb-10 hide-scroll-bar">
-    <div class="flex flex-nowrap lg:ml-40 md:ml-20 ml-10 ">
-      <!--Therapist-->
-      <div class="inline-block px-3">
-        <div class="w-64 h-64 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-          <!--Profile Picture-->
-          <div class="tphoto rounded-lg border border-gray-400 shadow-lg items-center">
-            <img src="./assets/img/tempusers/therapist1.jpg" class="w-full user-image " alt="Therapist Photo"/>
-          </div>
-          <!--Name-->
-          <div class="text-xl float-left p-4"><?php echo $row['firstname']?></div>
-          <!--Hospital-->
-          <div class="pl-4 text-gray-400">
-            <p>Psychologist</p>
-            <p><?php echo $row['hospital']?></p>
-          </div>
-          <!--View Profile Button-->
-        </div>
-        <?php } ?>
-    </div>
-  </div>
 
+  <!--Therapists List-->
+<div class="flex flex-col bg-white m-auto p-auto">
+      <div class="flex overflow-x-scroll p-10 hide-scroll-bar">
+        <div class="flex flex-nowrap">
+          <!--Beginning of card-->
+          <?php foreach ($therapistInfo as $row) {?>
+          <div class="inline-block px-20">
+            <div class="w-64 h-82 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+              <!--Profile Picture-->
+              <?php
+              if (isset($row['profile_picture'])) {?>
+                <img class="w-full" src="./storage/profile_images/<?php echo $row['profile_picture']?>" alt="assets\img\therapistDefault.png" />
+              <?php }?>
+
+              <?php
+              if (!isset($row['profile_picture'])) {?>
+                <img class="w-full" src="./assets/img/therapistDefault.png" />
+              <?php }?>
+              <!--<img src="./assets/img/tempusers/therapist1.jpg" class="w-full" alt="Therapist Photo"/>-->
+              <!--Name-->
+              <div class="text-xl p-4"><?php echo $row['firstname']; echo " "; echo $row['lastname'];?></div>
+              <!--Hospital-->
+              <div class="pl-4 text-gray-400">
+                <p><?php echo $row['specialty']?></p>
+                <p><?php echo $row['hospital']?></p>
+              </div>
+              <!--Link to visit profile-->
+              <div class="flex items-center justify-center w-full h-full pt-12">
+                <a class=" text-blue-500 px-6 py-3 hover:bg-green-100 rounded-md text-sm" href='<?php echo "therapistProfile.php?view=" .$row['userId']?>'>Visit Profile</a>
+              </div>
+            </div>
+          </div>
+          <?php } ?>
+          <!--End of Card-->
+        </div>
+      </div>
 </div>
 <style>
 .hide-scroll-bar {
@@ -177,7 +193,7 @@
   display: none;
 }
 </style>
-          
+
 </body>
 
 <?php

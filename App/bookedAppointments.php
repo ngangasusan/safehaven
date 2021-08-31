@@ -111,12 +111,13 @@ $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["p
       $dbmanager = new DbManager();
 
       //Select from appointment table
-      $appointmentInfo = $dbmanager->query(DbManager::APPOINTMENT_TABLE, ["*"], "userId = ?", [$_SESSION['userId']]);
+      $userInfo = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userId = ?", [$_SESSION['userId']]);
       $firstname = $lastname = $email = "";
-      if ($userInfo !== false) {
+      if ($userInfo !== null) {
         $firstname = $userInfo['firstname'];
         $lastname = $userInfo['lastname'];
         $email = $userInfo['email'];
+        $usertype = $userInfo['userType'];
         // $verified = $userInfo['verified'];
       } else {
         //echo "User info is false";
@@ -176,52 +177,87 @@ $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["p
                 <th class="px-6 py-2 text-xs text-gray-500">
                   End Time
                 </th>
+
+                <?php
+                  if ($usertype == "therapist") { ?>
                 <th class="px-6 py-2 text-xs text-gray-500">
                   Approve
                 </th>
                 <th class="px-6 py-2 text-xs text-gray-500">
                   Decline
                 </th>
+                <?php } ?>
               </tr>
             <tbody class="bg-white">
               <?php
-              foreach ($tabledata as $row) { ?>
+                    $dbmanager = new DbManager();
+                    $firstname = $lastname = $email = "";
+                    //Select from appointment table
+                    $dbmanager->setFetchAll(true);
+                    $appointmentInfo = $dbmanager->query(DbManager::APPOINTMENT_TABLE, ["*"], "therapistId = ?", [$_SESSION['userId']]);
+                foreach ($appointmentInfo as $appointment) {
+                $userInfo= $dbmanager->query(DbManager::USER_TABLE, ["*"], "userId = ?", [$appointment['userId']]);
+                $fullname="";
+                if ($userInfo !== null) {
+                  $firstname = $userInfo['firstname'];
+                  $lastname = $userInfo['lastname'];
+                  $fullname= $firstname." ".$lastname;
+                  $email = $userInfo['email'];
+                  $usertype = $userInfo['userType'];
+                  // $verified = $userInfo['verified'];
+                } 
+                ?>
                 <tr class="whitespace-nowrap">
                     <!--Appointment Id-->
                   <td class="px-6 py-4 text-sm text-gray-500">.
-                    <?php echo $row[''] ?>
+                    <?php echo $appointment['appointmentId'] ?>
                   </td>
                   <!--Patient name-->
                   <td class="px-6 py-4">
                     <div class="text-sm text-gray-900">
-                      <?php echo $row[''] ?>
+                      <?php echo $fullname ?>
                     </div>
                   </td>
                   <!--Date-->
                   <td class="px-6 py-4">
-                    <?php echo $row[''] ?>
+                    <?php echo $appointment['date'] ?>
                   </td>
                   <!--Start Time-->
                   <td class="px-6 py-4">
-                    <?php echo $row[''] ?>
+                    <?php echo $appointment['startTime'] ?>
                   </td>
                   <!--End Time-->
                   <td class="px-6 py-4">
-                    <?php echo $row[''] ?>
+                    <?php echo $appointment['endTime'] ?>
                   </td>
-                   <!--Accept Request-->
+                  
+                  <?php
+                  if ($usertype == "therapist") { ?>
+                  
+                  <!--Approve Request-->
                   <td class="px-6 py-4">
-                    <i class="fas fa-user-check text-green-500"></i>
+                    <?php
+                     $id= $appointment['appointmentId'];
+                    if($appointment['approvalStatus']=="pending"){
+                      echo "<i id='$id' class='fas fa-user-check text-green-500' onclick='approve(this)'></i>";
+                    }else if($appointment['approvalStatus']=="accepted"){
+                      echo "<i id='$id' class='fa fa-check' style='color:green;'></i>";
+                    }
+                    ?>
                   </td>
                   <!--Cancel Request-->
                   <td class="px-6 py-4">
-                    <i class="fas fa-user-times text-red-500"></i>
+                  <?php
+                    if($appointment['approvalStatus']=="pending"){
+                      echo "<i id='$id' class='fas fa-user-times text-red-500' onclick='decline(this)'></i>";
+                    }else if($appointment['approvalStatus']=="declined"){
+                      echo "<i id='$id' class='fas fa-times' style='color:red;'></i>";
+                    }
+                    ?>
                   </td>
+                  <?php }?>
                 </tr>
-
               <?php } ?>
-
-
 
             </tbody>
           </table>
@@ -231,5 +267,5 @@ $tabledata = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userType = ?", ["p
     </div>
   </div>
 </body>
-
+<script src="js/bookedAppointment.js"></script>
 </html>

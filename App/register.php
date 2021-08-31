@@ -37,6 +37,7 @@ session_start();
 
     $dbmanager = new DbManager();
     $userinfo = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userId = ?", [$id]);
+    //var_dump($userinfo);
 
     if ($userinfo !== false) {
       $firstname = $userinfo['firstname'];
@@ -77,19 +78,19 @@ session_start();
           <!--First Name-->
           <div>
             <label for="firstname" class="text-gray-500 text-xs font-bold mb-2 ml-2">First Name</label>
-            <input type="text" name="firstname" id="firstname" onkeyup="nameInputVerify(this)" value="Girl" value="<?php echo $firstname ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your first name">
+            <input type="text" name="firstname" id="firstname" onkeyup="nameInputVerify(this)" value="<?php echo $firstname ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your first name">
           </div>
 
           <!--Last Name-->
           <div>
             <label for="lastname" class="text-gray-500 text-xs font-bold mb-2 ml-2">Last Name</label>
-            <input type="text" name="lastname" id="lastname" onkeyup="nameInputVerify(this)" value="Girl" value="<?php echo $lastname ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your first name">
+            <input type="text" name="lastname" id="lastname" onkeyup="nameInputVerify(this)" value="<?php echo $lastname ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your first name">
           </div>
         </div>
         <!--Email-->
         <div class="flex flex-col mb-6">
           <label for="email" class="text-gray-500 text-xs font-bold mb-2 ml-2">Email address</label>
-          <input type="email" name="email" id="email" onkeyup="emailInputVerify(this)" value="suengangaw@gmail.com" value="<?php echo $email ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your email address">
+          <input type="email" name="email" id="email" onkeyup="emailInputVerify(this)" value="<?php echo $email ?>" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Your email address">
         </div>
 
         <?php if (isset($_SESSION['userId'])) { ?>
@@ -130,13 +131,13 @@ session_start();
         <!--Password-->
         <div class="flex flex-col mb-6">
           <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Password</label>
-          <input type="password" name="password" id="password" onkeyup="checkPassword(this)" value="Value12345" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Enter your password" />
+          <input type="password" name="password" id="password" onkeyup="checkPassword(this)" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Enter your password" />
         </div>
 
         <!-- Confirm Password-->
         <div class="flex flex-col mb-6">
           <label for="password" class="text-gray-500 text-xs font-bold mb-2 ml-2">Confirm Password</label>
-          <input type="password" name="cpassword" id="cpassword" value="Value12345" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Confirm your password" />
+          <input type="password" name="cpassword" id="cpassword" class="text-sm text-gray-500 py-2 px-4 rounded-3xl border focus:outline-none" placeholder="Confirm your password" />
         </div>
 
 

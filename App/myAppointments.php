@@ -130,25 +130,40 @@
       </div>
     </ul>
   </nav>
+  <?php
+  $dbmanager = new DbManager();
+  $firstname = $lastname = $email = "";
+  //Select from appointment table
+  $dbmanager->setFetchAll(true);
+  $appointmentInfo = $dbmanager->query(DbManager::APPOINTMENT_TABLE, ["*"], "userId= ?", [$_SESSION['userId']]);
+  $therapistInfo = $dbmanager->query("`user` INNER JOIN therapist ON user.userId = therapist.therapistId", ["*"],"1",[],false);
+
+  foreach ($therapistInfo as $row) {
+    
+  }
+  ?>
   <!--Appointment details card-->
+
   <div class="flex flex-wrap">
-    <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+    <div class="w-full md:w-1/2 p-8">
         <!--Appointment One-->
-        <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-5">
+        <?php foreach ($appointmentInfo as $appointment) {?>
+        <div class="`flex flex-row bg-gradient-to-b from-green-10 to-green-200 border-b-4 border-green-600 rounded-lg shadow-xl p-5">
             <div class="flex flex-row items-center">
                  <!--Therapists profile photo-->
                 <div class="flex-shrink pr-4">
-                    <div class="rounded-full p-5 bg-green-600"><i class="fas fa-user fa-2x fa-inverse"></i></div>
+                    <div class="rounded-full p-5 bg-green-600"><i class="fas fa-calendar fa-2x fa-inverse"></i></div>
                 </div>
                 <div class="flex-1 text-right md:text-center">
-                    <h5 class="font-bold uppercase text-gray-600">Therapist Name</h5>
-                    <!--Therapy time-->
-                    <h3 class=" text-3xl"><span class="text-green-500"><i class="fas fa-clock"></i></span>11:00 - 11:30</h3>
+                    <h5 class="font-bold uppercase text-gray-600"><?php echo $row['firstname']; echo $row['lastname'];?></h5>
+                    <!--Therapy start time-->
+                    <h3 class=" text-2xl"><span class="text-green-500"><i class="fas fa-clock"></i></span><?php echo $appointment['startTime'] ?></h3>
                     <!--Therapy date-->
-                    <h3 class="text-3xl"><span class="text-green-500"><i class="fas fa-calendar"></i></span>11:00 - 11:30</h3>
+                    <h3 class="text-2xl"><span class="text-green-500"><i class="fas fa-clock"></i></span><?php echo $appointment['endTime'] ?></h3>
                 </div>
             </div>
         </div>
+        <?php }?>
         <!--/End of appointment one card-->
     </div>
   </div>

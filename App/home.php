@@ -66,6 +66,7 @@
       $dbmanager = New DbManager();
       $userInfo = $dbmanager->query(DbManager::USER_TABLE, ["*"], "userId = ?", [$_SESSION['userId']]);
       $firstname = $lastname = $email = "";
+      //var_dump($userInfo);
       if ($userInfo!==false) {
         $firstname = $userInfo['firstname'];
         $lastname = $userInfo['lastname'];

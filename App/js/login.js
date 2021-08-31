@@ -29,12 +29,12 @@ function handleLoginResponse(xhttp) {
     console.log(response.msg);
     setTimeout(() => {
         if(response.msg == "admin") {
-            window.location.href= "./admin.php";
+            location.href= "./admin.php";
             console.log("admin called");
         }
-        if(response.msg == "patient") {
-            window.location.href= "./home.php";
-            console.log("patient called");
+        else{
+            location.href= "./therapists.php";
+            console.log("patient/therapist called");
         }
     }, 1000);
 }
